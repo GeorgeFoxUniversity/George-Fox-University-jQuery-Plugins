@@ -165,7 +165,7 @@
              
             
             //If we don't have to fast forward in the menu 
-            if( settings.current == null )
+            if( settings.current == null || $(".selected").parentsUntil('div.gfu-menu-holder').length == 0 )
             {
                 _buildMenu_.apply(this, [data.realMenu, settings.rootTitle]);                       
             }
@@ -400,11 +400,25 @@
             if( direction == 'down' )
             {
                 newTop = currentTop - distance;
+                
+                // don't go bellow the bottom of the list
+                if( newTop < ( $(data.menu).height() - $(data.view).height() ) * -1 )
+                {
+                    newTop = ( $(data.menu).height() - $(data.view).height() ) * -1;
+                }
+
             }
             else if( direction == 'up' )
             {
                 newTop = currentTop + distance;
+
+                if( newTop > 0 )
+                {
+                    newTop = 0;
+                }
             }
+
+            
 
             //Scroll!
             $(data.menu).animate({top : newTop }, 'slow');
@@ -421,7 +435,7 @@
             $(settings.up).show();
         }
 
-        if( currentTop < diffrence )
+        if( newTop <= ( $(data.menu).height() - $(data.view).height() ) * -1 )
         {
             $(settings.down).hide();
         }

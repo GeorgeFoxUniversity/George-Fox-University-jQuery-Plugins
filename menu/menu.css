@@ -23,7 +23,7 @@ div.gfu-menu-holder
 div.gfu-menu-holder div.gfu-menu-title
 {
     font-weight: bold;
-    padding: 7px 7px 7px 20px;
+    padding: 7px 7px 7px 25px;
     color:#ffffff;
     background: url("http://www.georgefox.edu/template/interior/catalog/images/top-level-back-arrow.png") no-repeat scroll 3px 5px #334B55;
 }
@@ -48,6 +48,7 @@ div.gfu-menu > div
 div.gfu-menu > div:hover
 {
     background-color:#dddddd;
+    cursor: pointer;
 }
 
 div.gfu-menu-holder div.gfu-menu-title:hover {
