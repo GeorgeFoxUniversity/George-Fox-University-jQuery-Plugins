@@ -25,7 +25,7 @@ div.gfu-menu-holder div.gfu-menu-title
     font-weight: bold;
     padding: 7px 7px 7px 25px;
     color:#ffffff;
-    background: url("http://www.georgefox.edu/template/interior/catalog/images/top-level-back-arrow.png") no-repeat scroll 3px 5px #334B55;
+    background: url("images/top-level-back-arrow.png") no-repeat scroll 3px 5px #334B55;
 }
 
 div.gfu-menu-holder div.gfu-menu-title-root
@@ -59,7 +59,7 @@ div.gfu-menu > div.gfu-menu-sub
 {
     font-style: italic;
     padding: 7px 20px 7px 25px;
-    background: url("http://www.georgefox.edu/template/interior/catalog/images/sub-menu-icon.png") no-repeat scroll 182px center transparent;
+    background: url("images/sub-menu-icon.png") no-repeat scroll 182px center transparent;
 }
 
 a#down, a#up {
