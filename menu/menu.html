@@ -15,17 +15,13 @@
 
             $("#up").click(function()
             {
-                //move( $(".gfu-menu"), 250, "up" );
                 $("#menu").gfuMenu('scroll', 250, 'up');
             
             });
 
             $("#down").click(function()
             {
-                //move( $(".gfu-menu"), 250, "down" );
-                
                 $("#menu").gfuMenu('scroll', 250, 'down');
-            
             });
 
 
@@ -36,6 +32,70 @@
     
 </head>
 <body>
+
+
+<div class="instructions">
+
+    <h3>Settings:</h3>
+    <dl>
+        <dt>log</dt>
+        <dd>Wither to display logging.</dd>
+        <dd>Defaults to <code>false</code></dd>
+
+        <dt>subMenuTitle<dt>
+        <dd>Sector of a submenu's title in the html.</dd>
+        <dd>Defaults to <code>'span:first'</code></dd>
+
+        <dt>subMenu</dt>
+        <dd>Selector of a submenu in html.<dd>
+        <dd>Defaults to <code>'ul:first'</code></dd>
+        
+        <dt>rootTitle</dt>
+        <dd>Text to use for the top level or 'root' menu title.</dd>
+        <dd>Defaults to <code>'Menu'</code></dd>
+
+        <dt>current</dt>
+        <dd>Selector of the submenu to display from the start.  Useful for navigation menus.</dd>
+        <dd>Defaults to <code>null</code></dd>
+        
+        <dt>up</dt>
+        <dd>Selector of an "up" button to hide when the menu is fully at the top.</dd>
+        <dd>Defaults to <code>null</code></dd>
+        
+        <dt>down</dt>
+        <dd>Selector of a "down" button to hide when the menu is fully scrolled.</dd>
+        <dd>Defaults to <code>null</code></dd>
+
+        <dt>holderSelector</dt>
+        <dd>Container for the marked up menu.  If null is passed in a div with the class of <code>gfu-menu-holder</code> is created before the "real" menu markup.  If a container is given the menu will appear there and given the class <code>gfu-menu-holder</code>.</dd>
+        <dd>Defaults to <code>null</code></dd>
+        
+        
+        <dd>itemClick</dd>
+        <dt>Defaults to <code>null</code>
+        afterSubMenu : null 
+    </dl>
+    
+     
+    <h3>Data</h3>
+
+        realMenu: null,
+        nav : null,
+        view : null,
+        menu : null 
+
+    
+    <h3>Required CSS</h3>
+
+    <h3>Public Methods</h3>
+
+scroll : function( ) { return _scroll_.apply(this, arguments);  },
+        data : function( ) { return data; }
+
+
+</div>
+
+
 
 
 <a id="up" href="#up">Up</a>

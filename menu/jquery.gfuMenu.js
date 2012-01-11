@@ -233,10 +233,10 @@
          
         $(list).children('li').each(function()
         {
-            // Create the entry tiem
+            // Create the entry item
             var item = $('<div class="gfu-menu-item"></div>');
             
-            // Add a refrence to the "real" menu item
+            // Add a reference to the "real" menu item
             item.data('gfuMenu', {real : this});
 
             if( $(this).children('ul').length != 0 )
@@ -318,20 +318,29 @@
         }
     }
 
-
+    /**
+     * Called when normal list item is clicked.  Normal means that it does not
+     * contain a submenu.
+     *
+     * @param event special DOM event for clicked element
+     */ 
     function _itemClick_(event)
     {
+        // Reference to the original html menu item.
         real = $(this).data('gfuMenu').real;
 
         if( settings.itemClick !== null )
         {
+            // If itemClick was set, run that function and pass it the 'real' list item.
             settings.itemClick.apply(this, [real]);
         }
         else if( $(real).children('a:first') )
         {
+            // If itemClick was not set, go to the href of the first link.
             window.location = $(real).children('a:first').attr('href');
         }
-    }
+
+    } // End of _itemClick_
     
     
     function _buildMenuFromTitle_(event)
