@@ -1,6 +1,12 @@
-/*
+/* A drill down menu plug-in created by the Marketing and Communication Department of George Fox University.  
+ *
+ * We needed an easy to theme drill down menu for our course catalog.  As none
+ * of the existing options did exactly what we needed, we rolled our own.
+ *
+ * 
+ *
  * @author Joel Kelley <jkelley@georgefox.edu>
- * @version 0.01
+ * @version 0.5
  * @licence MIT
  */
 (function( $ ){
@@ -33,31 +39,38 @@
      *
      */
     var methods = {
+
         init : function( options ) { return _init_.apply(this, arguments);  },
         scroll : function( ) { return _scroll_.apply(this, arguments);  },
-        data : function( ) { return data; }
-    };
+        data : function( ) { return $(this).data('gfuMenu').data; }
+
+    }; // end of methods declaration
 
 
     
     /**
+     * Template for plug-in's widely used data object.
+     *
      * Holds data that is needed to control state and may prove
      * interesting/useful for a developer using this plug-in.
      */
     var defaultData = {
+
         realMenu: null,
         nav : null,
         view : null,
         menu : null 
-    }
+
+    } // End of default data template
 
 
    
     /**
-     * Setting that may be passed in and control plug-in behavior.
-     * 
+     * Default setting for the plugin.  They can all be overridden when the
+     * plug-in is initialized.
      */
     var defaultSettings = {
+
         subMenuTitle :'span:first',
         subMenu : 'ul:first',
         rootTitle: 'Menu',
@@ -67,15 +80,16 @@
         holderSelector: null,
         itemClick : null,
         afterSubMenu : null 
-    };
+
+    }; // End of default settings
 
 
 
     /**
-     * The "real" selectorView method.  Decides with method needs to be called.
+     * The "real" gfuMenu method.  Decides with method needs to be called.
      * 
-     * $("element").selectorView(options) - calls init
-     * $("element").selectorView(method, arguments) - calls a function with the given arguments
+     * $("element").gfuMenu(options) - calls init
+     * $("element").gfuMenu(method, arguments) - calls a function with the given arguments
      *
      * @throws - exception if an undefined method is called
      */
@@ -102,47 +116,54 @@
 
 
     /**
-     * Initializes the selectorView plug-in and populates the data object
+     * Initializes the gfuMenu plug-in and populates the data object
      * 
      * @options - {} see comments for settings
      *
-     * @return - objects will an initialized selectorView plug-in instance
+     * @return - objects will an initialized gfuMenu plug-in instance
      */
     function _init_( options )
     {
         debug( this, arguments );
 
-        // While it is odd to see a return statement at the start of a
-        // function, it is required to keep jQuery chaining.
+        // Make sure chaining works
         return this.each(function()
         {
-            // Mark the real menu so it is easy to access
-            $(this).addClass('gfu-menu-user');
             
-            // Store all instance data on the menu element.
-            $(this).data('gfuMenu', { settings : {}, data : {} }) 
+            /* Prepare our data object that will be attached the element the
+             * plug-in is called on.
+             * 
+             * The default data template added after settings because I do not
+             * want the user to be able to give them a starting value.
+             */
+            var data = $.extend( {}, defaultSettings );
             
-            // Reference data and settings to sorter name
-            var settings = $(this).data('gfuMenu').settings
-            var data = $(this).data('gfuMenu').data
-            
-            // Set default values for data and settings 
-            $.extend( settings, defaultSettings );
-            $.extend( data, defaultData );
-             
-            //Merge options
+            //Merge user options with settings
             if( options )
             {
-                $.extend( settings, options );
+                $.extend( data, options );
             }
+
+            // Add the default data template
+            $.extend( data, defaultData );
             
-            // Keep track of the real menu for refrence 
-            data.realMenu = $(this);
+
+            $(this).addClass('gfu-menu-user'); // Mark the real menu so it is easy to access
+            $(this).data('gfuMenu', { data : data }) // Create a local data/settings store
+
             
-            // Nav stack for drill down
-            data.nav = [];
             
-            if( settings.holderSelector === null )
+            /**
+             * Data attributes
+             */
+            data.realMenu = $(this); // The user supplied menu
+            data.nav = []; // Navigation stack
+            data.menu = $('<div class="gfu-menu"></div>'); // The gfuMenu
+            
+            /**
+             * The div to display the gfuMenu and scroll
+             */ 
+            if( data.holderSelector === null )
             {
                 // Create a new container for gfuMenu view
                 data.view = $('<div class="gfu-menu-holder"></div>');
@@ -150,23 +171,22 @@
             }
             else
             {
-                data.view = $(settings.holderSelector);
+                data.view = $(data.holderSelector);
                 data.view.addClass("gfu-menu-holder");
             }
             
-
-            // Create the place for menu items to go
-            data.menu = $('<div class="gfu-menu"></div>'); 
+            // Put the window in the view; 
             data.view.append(data.menu);
+           
             
             // Make sure the menu always has a reference to the data object as well.
             data.menu.data('gfuMenu', { real : this })    
              
             
             //If we don't have to fast forward in the menu 
-            if( settings.current == null || $(".selected").parentsUntil('div.gfu-menu-holder').length == 0 )
+            if( data.current == null || $(".selected").parentsUntil('div.gfu-menu-holder').length == 0 )
             {
-                _buildMenu_.apply(this, [data.realMenu, settings.rootTitle]);                       
+                _buildMenu_.apply(this, [data.realMenu, data.rootTitle]);                       
             }
             else
             {
@@ -174,12 +194,12 @@
 
                 
                 // Fill stack
-                $(settings.current).parentsUntil('div.gfu-menu-holder').each(function()
+                $(data.current).parentsUntil('div.gfu-menu-holder').each(function()
                 {
                     if( $(this).is('li') )
                     {
                         var parentMenu = {};
-                        parentMenu.title = $(this).children(settings.subMenuTitle).text();
+                        parentMenu.title = $(this).children(data.subMenuTitle).text();
                         parentMenu.menu = $(this).children('ul:first');
                         
                         data.nav.unshift(parentMenu);
@@ -190,12 +210,12 @@
                 });
                 //Put the root menu at the head of nav
                 var root = {};
-                root.title = settings.rootTitle;
+                root.title = data.rootTitle;
                 root.menu = data.realMenu;
                 data.nav.unshift(root);
                 
-                var title = $(settings.current).children(settings.subMenuTitle).text();
-                var subMenu = $(settings.current).children('ul:first'); 
+                var title = $(data.current).children(data.subMenuTitle).text();
+                var subMenu = $(data.current).children('ul:first'); 
                  
                 _buildMenu_.apply(this, [subMenu, title]);                       
             
@@ -215,7 +235,6 @@
     {
 
         // Reference data and settings to sorter name
-        var settings = $(this).data('gfuMenu').settings
         var data = $(this).data('gfuMenu').data
 
         data.menu.empty();
@@ -262,27 +281,27 @@
         if( $(data.menu).height() < $(data.view).height() )
         {
             debug('hide');
-            if(settings.up != null )
+            if(data.up != null )
             {
-                $(settings.up).hide();
+                $(data.up).hide();
             }
 
-            if(settings.down != null )
+            if(data.down != null )
             {
-                $(settings.down).hide();
+                $(data.down).hide();
             }
         }
         else // big enough window to scroll
         {
             //Still hide top scroll button by default
-            if(settings.up != null )
+            if(data.up != null )
             {
-                $(settings.up).hide();
+                $(data.up).hide();
             }
             
-            if(settings.down != null )
+            if(data.down != null )
             {
-                $(settings.down).show();
+                $(data.down).show();
             }
 
         }
@@ -294,7 +313,6 @@
 
     function _subMenuClick_(event)
     {   
-       
 
         var subMenu = [];
 
@@ -303,7 +321,6 @@
        
         // Plugin data store
         var data = $(real).parents('.gfu-menu-user').data('gfuMenu').data
-        var settings = $(real).parents('.gfu-menu-user').data('gfuMenu').settings
 
         // Save navigation information
         last = {}
@@ -315,15 +332,15 @@
         debug('Adding to stack: ', last );
         
         //Update the title of the menu
-        title =  $(real).children(settings.subMenuTitle).text();
+        title =  $(real).children(data.subMenuTitle).text();
         
-        subMenu = $(real).children(settings.subMenu);
+        subMenu = $(real).children(data.subMenu);
         
         _buildMenu_.apply(data.realMenu, [subMenu, title]);
 
-        if( settings.afterSubMenu !== null )
+        if( data.afterSubMenu !== null )
         {
-            settings.afterSubMenu.apply(this, [real]);
+            data.afterSubMenu.apply(this, [real]);
         }
     }
 
@@ -337,11 +354,13 @@
     {
         // Reference to the original html menu item.
         real = $(this).data('gfuMenu').real;
-
-        if( settings.itemClick !== null )
+ 
+        var data = $(real).parents('.gfu-menu-user').data('gfuMenu').data;
+         
+        if( data.itemClick !== null )
         {
             // If itemClick was set, run that function and pass it the 'real' list item.
-            settings.itemClick.apply(this, [real]);
+            data.itemClick.apply(this, [real]);
         }
         else if( $(real).children('a:first') )
         {
@@ -351,14 +370,12 @@
 
     } // End of _itemClick_
     
-    
+     
     function _buildMenuFromTitle_(event)
     {
-        console.log( arguments )
         var realMenu = $(this).parent('.gfu-menu').data('gfuMenu').real; 
         
         var data = $(realMenu).data('gfuMenu').data;
-        var settings = $(realMenu).data('gfuMenu').settings;
          
         if( data.nav.length > 0 )
         {
@@ -368,7 +385,7 @@
             //If we are back to the root, use the root title and class
             if( data.nav.length == 0 )
             {
-                prev.title = settings.rootTitle;
+                prev.title = data.rootTitle;
             }
             
             _buildMenu_.apply(data.realMenu, [prev.menu, prev.title]);   
@@ -379,9 +396,7 @@
     function _scroll_(distance, direction)
     {
 
-
         // Reference data and settings to sorter name
-        var settings = $(this).data('gfuMenu').settings
         var data = $(this).data('gfuMenu').data
 
 
@@ -459,20 +474,20 @@
         // Up and down button hide and show 
         if( newTop >= 0 )
         {
-            $(settings.up).hide();
+            $(data.up).hide();
         }
         else
         {
-            $(settings.up).show();
+            $(data.up).show();
         }
 
         if( newTop <= ( $(data.menu).height() - $(data.view).height() ) * -1 )
         {
-            $(settings.down).hide();
+            $(data.down).hide();
         }
         else
         {
-            $(settings.down).show();
+            $(data.down).show();
         }
 
         
