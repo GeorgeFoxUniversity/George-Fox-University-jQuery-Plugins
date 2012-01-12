@@ -24,22 +24,6 @@
     }// End of debug
 
 
-        
-    /**
-     * Prints out a debug messages to console.log.  This allows just one flag
-     * to be changed for the code to be ready for production, instead of
-     * removing all the console.log statements.
-     */
-    function log()
-    {
-        if( settings.log )
-        {
-            console.log( arguments );
-        }
-
-    }// End of Log
-
-
 
     /**
      * Defines the public methods of the plug-in. 
@@ -60,7 +44,7 @@
      * Holds data that is needed to control state and may prove
      * interesting/useful for a developer using this plug-in.
      */
-    var data = {
+    var defaultData = {
         realMenu: null,
         nav : null,
         view : null,
@@ -73,8 +57,7 @@
      * Setting that may be passed in and control plug-in behavior.
      * 
      */
-    var settings = {
-        log : false,
+    var defaultSettings = {
         subMenuTitle :'span:first',
         subMenu : 'ul:first',
         rootTitle: 'Menu',
@@ -133,6 +116,20 @@
         // function, it is required to keep jQuery chaining.
         return this.each(function()
         {
+            // Mark the real menu so it is easy to access
+            $(this).addClass('gfu-menu-user');
+            
+            // Store all instance data on the menu element.
+            $(this).data('gfuMenu', { settings : {}, data : {} }) 
+            
+            // Reference data and settings to sorter name
+            var settings = $(this).data('gfuMenu').settings
+            var data = $(this).data('gfuMenu').data
+            
+            // Set default values for data and settings 
+            $.extend( settings, defaultSettings );
+            $.extend( data, defaultData );
+             
             //Merge options
             if( options )
             {
@@ -158,10 +155,12 @@
             }
             
 
-            // Create the place for menu times to go
+            // Create the place for menu items to go
             data.menu = $('<div class="gfu-menu"></div>'); 
             data.view.append(data.menu);
             
+            // Make sure the menu always has a reference to the data object as well.
+            data.menu.data('gfuMenu', { real : this })    
              
             
             //If we don't have to fast forward in the menu 
@@ -185,7 +184,7 @@
                         
                         data.nav.unshift(parentMenu);
                         
-                        log( this ); 
+                        debug( this ); 
                     }
                 
                 });
@@ -204,9 +203,9 @@
              
 
             // Title Nav event
-            $(document).delegate('div.gfu-menu-holder div.gfu-menu-title', 'click', _buildMenuFromTitle_);
+            $(data.menu).delegate('div.gfu-menu-title', 'click', _buildMenuFromTitle_);
 
-            log( data );
+            debug( data );
         });
     
     } //End of _init_
@@ -214,8 +213,11 @@
 
     function _buildMenu_(list, title)
     {
-       
-        
+
+        // Reference data and settings to sorter name
+        var settings = $(this).data('gfuMenu').settings
+        var data = $(this).data('gfuMenu').data
+
         data.menu.empty();
         
         // Create the title area of the menu
@@ -259,7 +261,7 @@
         //reset scroll stuff
         if( $(data.menu).height() < $(data.view).height() )
         {
-            log('hide');
+            debug('hide');
             if(settings.up != null )
             {
                 $(settings.up).hide();
@@ -292,9 +294,16 @@
 
     function _subMenuClick_(event)
     {   
+       
+
         var subMenu = [];
+
         // Real list item that corresponds to our entry in the view
         var real = $(this).data('gfuMenu').real;
+       
+        // Plugin data store
+        var data = $(real).parents('.gfu-menu-user').data('gfuMenu').data
+        var settings = $(real).parents('.gfu-menu-user').data('gfuMenu').settings
 
         // Save navigation information
         last = {}
@@ -303,7 +312,7 @@
         
         // Push the last view onto the nav stack
         data.nav.push(last);
-        log('Adding to stack: ', last );
+        debug('Adding to stack: ', last );
         
         //Update the title of the menu
         title =  $(real).children(settings.subMenuTitle).text();
@@ -345,10 +354,16 @@
     
     function _buildMenuFromTitle_(event)
     {
+        console.log( arguments )
+        var realMenu = $(this).parent('.gfu-menu').data('gfuMenu').real; 
+        
+        var data = $(realMenu).data('gfuMenu').data;
+        var settings = $(realMenu).data('gfuMenu').settings;
+         
         if( data.nav.length > 0 )
         {
             var prev = data.nav.pop();
-            log( prev );
+            debug( prev );
 
             //If we are back to the root, use the root title and class
             if( data.nav.length == 0 )
@@ -363,6 +378,13 @@
 
     function _scroll_(distance, direction)
     {
+
+
+        // Reference data and settings to sorter name
+        var settings = $(this).data('gfuMenu').settings
+        var data = $(this).data('gfuMenu').data
+
+
         // Get the current position of the menu
         var currentTop = $(data.menu).css('top');
         var diffrence =  $(data.view).height() - $(data.menu).height();
@@ -370,7 +392,7 @@
         var move = true;
         var newTop = -1;
          
-        log("Top of scroll function");
+        debug("Top of scroll function");
         
         if( currentTop == 'auto' )
         {
@@ -393,17 +415,17 @@
              move = false;
         }
 
-        log('Move is: ', move);
+        debug('Move is: ', move);
         
         // If we overshot the top of the list
         if( currentTop > 0 && direction == 'up' )
         {
-            log("Over shot");
+            debug("Over shot");
             $(data.menu).animate({top : 0}, 'slow');
         }
         else if( move )
         {
-            log("Scroll!");
+            debug("Scroll!");
             
             // Do the right math for up (+) and down (-)
             if( direction == 'down' )
@@ -454,8 +476,8 @@
         }
 
         
-        log( newTop );
-        log( currentTop );
+        debug( newTop );
+        debug( currentTop );
     }
    
 })( jQuery );
