@@ -2,29 +2,44 @@
 <html>
 <head>
     <link rel="stylesheet" type="text/css" href="menu.css" />
-
+    
+    <!-- jQuery --> 
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <!-- George Fox University Menu Plug In --> 
     <script type="text/javascript" src="jquery.gfuMenu.js"></script>
+    
+    <!-- Plugin for synatax highlighting on demo page. -->
+    <script type="text/javascript" src="jquery.snippet.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery.snippet.min.css" />
+
 
     <script type="text/javascript">
 
+        /* Start highlighting */               
+        $(document).ready(function()
+        {
+            
+            $("pre.js").snippet("javascript", {style:"vim"});
+            $("pre.html").snippet("html", {style:"vim"});
+            $("pre.css").snippet("css", {style:"vim"});
         
+        });
+
          // Demo One
         $(document).ready(function()
         {
-            $("#demo-one-menu").hide();
             $("#demo-one-menu").gfuMenu({rootTitle: 'Demo One'});
-            console.log( $("#demo-one-menu").gfuMenu('data') );
 
             $("#up-demo-one").click(function()
             {
-                $("#demo-one").gfuMenu('scroll', 250, 'up');
-            
+                event.preventDefault();
+                $("#demo-one-menu").gfuMenu('scroll', 250, 'up');
             });
 
             $("#down-demo-one").click(function()
             {
-                $("#demo-one").gfuMenu('scroll', 250, 'down');
+                event.preventDefault();
+                $("#demo-one-menu").gfuMenu('scroll', 250, 'down');
             });
 
 
@@ -35,17 +50,18 @@
         // Demo Two
         $(document).ready(function()
         {
-            $("#menu").hide();
-            $("#menu").gfuMenu({log:false, holderSelector: '#menuHolder', up:'#up', down:'#down', current: '.selected'});
+            $("#menu").gfuMenu({holderSelector: '#menuHolder', up:'#up', down:'#down', fastForward: '.selected'});
 
-            $("#up").click(function()
+            $("#up").click(function(event)
             {
+                event.preventDefault();
                 $("#menu").gfuMenu('scroll', 250, 'up');
             
             });
 
-            $("#down").click(function()
+            $("#down").click(function(Seven)
             {
+                event.preventDefault();
                 $("#menu").gfuMenu('scroll', 250, 'down');
             });
 
@@ -56,97 +72,54 @@
 
     
     <style type="text/css">
-     #demo-two-menu-wrapper
-     {
-        position: relative;
-        margin-top: 60px;
-     }
+        
+        #demo-two-menu-wrapper
+        {
+           position: relative;
+           margin-top: 60px;
+        }
 
-     div.demo
-     {
-        float: left;
-        margin-right: 50px;
-     }
+        div.demo
+        {
+        }
+
+        #demo-one-menu-wrapper
+        {
+            float: left;
+            margin-right: 30px;
+        }
+        
+        div.info
+        {
+            margin-left: 20px;
+        }
+        div.info dl
+        {
+            margin-left: 20px;
+        }
+
+        #methods h5
+        {
+            margin: 0;
+        }
+        
+        #methods ol
+        {
+            margin-top: 0;
+        }
+    
     </style>
         
 </head>
 <body>
 
 
-<div class="instructions">
-
-    <h3>Settings:</h3>
-    <dl>
-        <dt>log</dt>
-        <dd>Wither to display logging.</dd>
-        <dd>Defaults to <code>false</code></dd>
-
-        <dt>subMenuTitle<dt>
-        <dd>Sector of a submenu's title in the html.</dd>
-        <dd>Defaults to <code>'span:first'</code></dd>
-
-        <dt>subMenu</dt>
-        <dd>Selector of a submenu in html.<dd>
-        <dd>Defaults to <code>'ul:first'</code></dd>
-        
-        <dt>rootTitle</dt>
-        <dd>Text to use for the top level or 'root' menu title.</dd>
-        <dd>Defaults to <code>'Menu'</code></dd>
-
-        <dt>current</dt>
-        <dd>Selector of the submenu to display from the start.  Useful for navigation menus.</dd>
-        <dd>Defaults to <code>null</code></dd>
-        
-        <dt>up</dt>
-        <dd>Selector of an "up" button to hide when the menu is fully at the top.</dd>
-        <dd>Defaults to <code>null</code></dd>
-        
-        <dt>down</dt>
-        <dd>Selector of a "down" button to hide when the menu is fully scrolled.</dd>
-        <dd>Defaults to <code>null</code></dd>
-
-        <dt>holderSelector</dt>
-        <dd>Container for the marked up menu.  If null is passed in a div with the class of <code>gfu-menu-holder</code> is created before the "real" menu markup.  If a container is given the menu will appear there and given the class <code>gfu-menu-holder</code>.</dd>
-        <dd>Defaults to <code>null</code></dd>
-        
-        
-        <dt>itemClick</dt>
-        <dd>Function to run when a normal list item is clicked.</dd>
-        <dd>Defaults to <code>null</code></dd>
-        
-        
-        <dt>afterSubMenu</dt>
-        <dd>Function to run after a submenu is loaded.</dd>
-        <dd>Defaults to <code>null</code></dd> 
-
-    </dl>
-    
-     
-    <h3>Data</h3>
-
-        realMenu: null,
-        nav : null,
-        view : null,
-        menu : null 
-
-    
-    <h3>Required CSS</h3>
-
-    <h3>Public Methods</h3>
-
-scroll : function( ) { return _scroll_.apply(this, arguments);  },
-        data : function( ) { return data; }
-
-
-</div>
-
-
 <div id="demo-one" class="demo">
 
-    <h2>Demo One: Fully Styled Menu</h2>
+    <h2>Demo One: Basic Menu</h2>
 
     <div id="demo-one-menu-wrapper">
-
+        <h3>Running Menu</h3>
         <a id="up-demo-one" href="#up">Up</a>
 
         <ul id="demo-one-menu">
@@ -179,13 +152,101 @@ scroll : function( ) { return _scroll_.apply(this, arguments);  },
             
             <li><a href="#level-one-item">Item Six</a></li>
             <li><a href="#level-one-item">Item Seven</a></li>
+ 
+            <li>
+                <span>Sub Menu Two</span>
+                <ul>
+                    <li><a href="#level-two-item">Sub Menu Two - Item One</a></li>
+                    <li><a href="#level-two-item">Sub Menu Two - Item Two</a></li>
+                </ul>
+            </li> <!-- End of sub menu one -->
+            <li><a href="#level-one-item">Item Seven</a></li>
+            <li><a href="#level-one-item">Item Eight</a></li>
+            <li><a href="#level-one-item">Item Nine</a></li>
+            <li><a href="#level-one-item">Item Ten</a></li>
+            <li><a href="#level-one-item">Item Eleven</a></li>
 
         </ul> <!-- end of demo menu -->
      
         <a id="down-demo-one" href="#down">Down</a>
     </div>
+    
+    <div id="js-view" style="float:left"> 
+    <h3>JavaScript for the Menu</h3>
+    
+    <pre class="js">
+
+$("#demo-one-menu").gfuMenu({rootTitle: 'Demo One'});
+
+$("#up-demo-one").click(function()
+{
+    event.preventDefault();
+    $("#demo-one-menu").gfuMenu('scroll', 250, 'up');
+});
+
+$("#down-demo-one").click(function()
+{
+    event.preventDefault();
+    $("#demo-one-menu").gfuMenu('scroll', 250, 'down');
+});
 
 
+    </pre>
+    </div> 
+    
+    <div style="clear:both"></div>
+     
+    <h3>Html for the Menu</h3>
+    <pre class="html">
+
+        &lt;ul id="demo-one-menu"&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item One&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Two&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Three&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Four&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Five&lt;/a&gt;&lt;/li&gt;
+            
+            &lt;li&gt;
+                &lt;span&gt;Sub Menu One&lt;/span&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href="#level-two-item"&gt;Sub Menu One - Item One&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#level-two-item"&gt;Sub Menu One - Item Two&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;span&gt;Sub Sub Menu&lt;/span&gt;
+                        &lt;ul&gt;
+                            &lt;li&gt;&lt;a href="#level-three-item"&gt;Sub Sub Menu - Item One&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#level-three-item"&gt;Sub Sub Menu - Item Two&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#level-three-item"&gt;Sub Sub Menu - Item Three&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#level-three-item"&gt;Sub Sub Menu - Item Four&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#level-three-item"&gt;Sub Sub Menu - Item Five&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#level-three-item"&gt;Sub Sub Menu - Item Six&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#level-three-item"&gt;Sub Sub Menu - Item Seven&lt;/a&gt;&lt;/li&gt;
+                            &lt;li&gt;&lt;a href="#level-three-item"&gt;Sub Sub Menu - Item Eight&lt;/a&gt;&lt;/li&gt;
+                        &lt;/ul&gt; 
+                    &lt;/li&gt; &lt;!-- End of sub sub menu --&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt; &lt;!-- End of sub menu one --&gt;
+            
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Six&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Seven&lt;/a&gt;&lt;/li&gt;
+ 
+            &lt;li&gt;
+                &lt;span&gt;Sub Menu Two&lt;/span&gt;
+                &lt;ul&gt;
+                    &lt;li&gt;&lt;a href="#level-two-item"&gt;Sub Menu Two - Item One&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="#level-two-item"&gt;Sub Menu Two - Item Two&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+            &lt;/li&gt; &lt;!-- End of sub menu one --&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Seven&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Eight&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Nine&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Ten&lt;/a&gt;&lt;/li&gt;
+            &lt;li&gt;&lt;a href="#level-one-item"&gt;Item Eleven&lt;/a&gt;&lt;/li&gt;
+
+        &lt;/ul&gt; &lt;!-- end of demo menu --&gt;
+
+
+    </pre>
 
 
 </div> <!-- /div#demo-one.demo -->
@@ -972,7 +1033,153 @@ scroll : function( ) { return _scroll_.apply(this, arguments);  },
 
     </div>
 
-</div> <!-- /div#demo-one.demo
+</div> <!-- /div#demo-one.demo -->
+
+<div class="instructions">
+    <h2>Technical Information</h2>
+
+    
+    <div class="info">    
+        
+        <h3>Settings:</h3>
+       
+        <dl>
+            <dt>log</dt>
+            <dd>Wither to display logging.</dd>
+            <dd>Defaults to <code>false</code></dd>
+
+            <dt>subMenuTitle<dt>
+            <dd>Sector of a submenu's title in the html.</dd>
+            <dd>Defaults to <code>'span:first'</code></dd>
+
+            <dt>subMenu</dt>
+            <dd>Selector of a submenu in html.<dd>
+            <dd>Defaults to <code>'ul:first'</code></dd>
+            
+            <dt>rootTitle</dt>
+            <dd>Text to use for the top level or 'root' menu title.</dd>
+            <dd>Defaults to <code>'Menu'</code></dd>
+
+            <dt>current</dt>
+            <dd>Selector of the submenu to display from the start.  Useful for navigation menus.</dd>
+            <dd>Defaults to <code>null</code></dd>
+            
+            <dt>up</dt>
+            <dd>Selector of an "up" button to hide when the menu is fully at the top.</dd>
+            <dd>Defaults to <code>null</code></dd>
+            
+            <dt>down</dt>
+            <dd>Selector of a "down" button to hide when the menu is fully scrolled.</dd>
+            <dd>Defaults to <code>null</code></dd>
+
+            <dt>holderSelector</dt>
+            <dd>
+                Container for the marked up menu.  If null is passed in a div with
+                the class of <code>gfu-menu-holder</code> is created before the
+                "real" menu markup.  If a container is given the menu will appear
+                there and given the class <code>gfu-menu-holder</code>.
+            </dd>
+            <dd>Defaults to <code>null</code></dd>
+            
+            
+            <dt>itemClick</dt>
+            <dd>Function to run when a normal list item is clicked.</dd>
+            <dd>Defaults to <code>null</code></dd>
+            
+            
+            <dt>afterSubMenu</dt>
+            <dd>Function to run after a submenu is loaded.</dd>
+            <dd>Defaults to <code>null</code></dd> 
+
+        </dl>
+          
+        <p>
+            Note: It is possible to change settings after initialization, but this should only be done if you know exactly what you are doing.
+        </p>
+   
+    </div> <!-- /.info -->
+   
+
+     
+    
+    <div class="info">
+        <h3>Data</h3>
+       
+        <dl>
+            <dt>realMenu</dt>
+            <dd>A reference to the use supplied menu in an unordered list.</dd> 
+
+            <dt>nav</dt>
+            <dd>The navigation stack of the plug-in.</dd>
+
+            <dt>view<dt>
+            <dd>The container that holds the plug-in generated menu</dd>
+
+            <dt>menu</dt>
+            <dd>The plug-in generated menu</dd> 
+        </dl>
+  
+        <p>
+            Note: These properties are possible to change, but this should only be done if you know exactly what you are doing.
+        </p>
+    
+    </div> 
+   
+
+    <div id="methods" class="info">
+        
+        <h3>Public Methods</h3>
+            
+        <p>
+            Public methods are called by <code>$(menu-element).gfuMenu('method', parameter, parameter)</code>.
+        </p>
+
+        <dt>scroll</dt>
+        <dd>
+            <h5>Parameters:</h5>
+            <ol>
+                <li>distance: number of pixels to scroll</li>
+                <li>direction: either 'up' or 'down'</li>
+            </ol>
+        </dd>
+
+        <dt>data</dt>
+        <dd>Returns a reference to the object with the combined settings/data properties described bellow.</dd>
+
+    </div> <!-- /#methods -->
+
+    
+    <div class="info">
+
+        <h3>Required CSS</h3>
+
+        <p>The bellow rules are the only ones needed to make the plug-in work.  However, I really suggest you do much more styling.<p>
+
+        <pre class="css">
+
+            #demo-one div.gfu-menu-holder
+            {
+                /* Suggested */ 
+                width: 199px;
+                
+                /* Required */ 
+                overflow: hidden;
+                position: relative;
+                height: 495px; /* Height can be anything, but it must be defined */
+            }
+
+            #demo-one div.gfu-menu 
+            {
+                position:relative;
+                top: 0px;
+            }
+
+        </pre>
+
+    </div>
+
+</div>
+
 
 </body>
 

@@ -74,7 +74,7 @@
         subMenuTitle :'span:first',
         subMenu : 'ul:first',
         rootTitle: 'Menu',
-        current : null,
+        fastForward : null,
         up : null,
         down : null,
         holderSelector: null,
@@ -149,6 +149,7 @@
             
 
             $(this).addClass('gfu-menu-user'); // Mark the real menu so it is easy to access
+            $(this).hide(); // Hide the user supplied menu
             $(this).data('gfuMenu', { data : data }) // Create a local data/settings store
 
             
@@ -183,18 +184,23 @@
             data.menu.data('gfuMenu', { real : this })    
              
             
-            //If we don't have to fast forward in the menu 
-            if( data.current == null || $(".selected").parentsUntil('div.gfu-menu-holder').length == 0 )
+            // Check to see if the menu needs fast forwarded 
+            if( data.fastForward == null || $( data.fastForward ).parentsUntil('div.gfu-menu-holder').length == 0 )
             {
+                // Build the root menu
                 _buildMenu_.apply(this, [data.realMenu, data.rootTitle]);                       
             }
             else
             {
+                /**
+                 * Fast forward the menu
+                 */
+                 
+                var title = $(data.fastForward).children(data.subMenuTitle).text();
+                var subMenu = $(data.fastForward).children('ul:first'); 
                 
-
-                
-                // Fill stack
-                $(data.current).parentsUntil('div.gfu-menu-holder').each(function()
+                // Fill the nav stack as fill the sub menu we wanted was clicked to 
+                $(data.fastForward).parentsUntil('div.gfu-menu-holder').each(function()
                 {
                     if( $(this).is('li') )
                     {
@@ -207,22 +213,18 @@
                         debug( this ); 
                     }
                 
-                });
+                }); // end of fill the stack
+
                 //Put the root menu at the head of nav
-                var root = {};
-                root.title = data.rootTitle;
-                root.menu = data.realMenu;
-                data.nav.unshift(root);
+                data.nav.unshift( {title: data.rootTitle, menu: data.realMenu} );
                 
-                var title = $(data.current).children(data.subMenuTitle).text();
-                var subMenu = $(data.current).children('ul:first'); 
-                 
+                // Build the sub menu the plug-in caller wanted loaded first                  
                 _buildMenu_.apply(this, [subMenu, title]);                       
             
-            }
+            } // End of go to the current select submenu
              
 
-            // Title Nav event
+            // When the title of the menu is clicked on, move up one level
             $(data.menu).delegate('div.gfu-menu-title', 'click', _buildMenuFromTitle_);
 
             debug( data );
@@ -230,17 +232,24 @@
     
     } //End of _init_
 
+    
 
+    /**
+     * Build the view for the current section of the menu
+     *
+     * @param list - html unordered list
+     * @param title - title of the current menu section
+     */
     function _buildMenu_(list, title)
     {
-
         // Reference data and settings to sorter name
         var data = $(this).data('gfuMenu').data
+        var titleHtml = $('<div class="gfu-menu-title">' + title + '</div>');
 
         data.menu.empty();
         
-        // Create the title area of the menu
-        data.menu.append('<div class="gfu-menu-title">' + title + '</div>');
+        data.menu.append(titleHtml); // Create the title area of the menu
+        titleHtml.data('gfuMenu', { data : data } ); // Attach data reference to the title
         
         // Check if title is the root title
         if( data.nav.length == 0 )
@@ -257,8 +266,8 @@
             // Create the entry item
             var item = $('<div class="gfu-menu-item"></div>');
             
-            // Add a reference to the "real" menu item
-            item.data('gfuMenu', {real : this});
+            // Add a reference to the "real" menu item and the data object
+            item.data('gfuMenu', {real : this, data : data});
 
             if( $(this).children('ul').length != 0 )
             {
@@ -315,12 +324,8 @@
     {   
 
         var subMenu = [];
-
-        // Real list item that corresponds to our entry in the view
-        var real = $(this).data('gfuMenu').real;
-       
-        // Plugin data store
-        var data = $(real).parents('.gfu-menu-user').data('gfuMenu').data
+        var real = $(this).data('gfuMenu').real; // The corresponding list element
+        var data = $(this).data('gfuMenu').data; // Plug-in's data store
 
         // Save navigation information
         last = {}
@@ -352,11 +357,10 @@
      */ 
     function _itemClick_(event)
     {
-        // Reference to the original html menu item.
-        real = $(this).data('gfuMenu').real;
  
-        var data = $(real).parents('.gfu-menu-user').data('gfuMenu').data;
-         
+        var real = $(this).data('gfuMenu').real; // The corresponding list element
+        var data = $(this).data('gfuMenu').data; // Plug-in's data store
+        
         if( data.itemClick !== null )
         {
             // If itemClick was set, run that function and pass it the 'real' list item.
@@ -373,9 +377,7 @@
      
     function _buildMenuFromTitle_(event)
     {
-        var realMenu = $(this).parent('.gfu-menu').data('gfuMenu').real; 
-        
-        var data = $(realMenu).data('gfuMenu').data;
+        var data = $(this).data('gfuMenu').data;
          
         if( data.nav.length > 0 )
         {

@@ -1,5 +1,79 @@
+/**
+ * Demo One: Basically Styled
+ */
+
+
+#demo-one div.gfu-menu-holder
+{
+    border: 1px solid #CCCCCC;
+    
+    /* Suggested */ 
+    width: 199px;
+    
+    /* Required */ 
+    overflow: hidden;
+    position: relative;
+    height: 200px;
+}
+
+#demo-one div.gfu-menu 
+{
+    position:relative;
+    top: 0px;
+}
+
+
+/* Just for looks and usablity*/
+
+/** 
+ * It is a good idea to css in a background image makes its function as a
+ * go back button obvious. The before content is just shown here as an example
+ * you don't have to do it that way.
+ */
+#demo-one div.gfu-menu-holder div.gfu-menu-title:before
+{
+    content: "^ ";
+}
+
+#demo-one div.gfu-menu-holder div.gfu-menu-title-root:before
+{
+    content: none;
+}
+
+#demo-one div.gfu-menu-holder div.gfu-menu-title
+{
+    font-weight: bold;
+    padding: 7px 7px 7px 25px;
+    color:#ffffff;
+    background: black;
+}
+
+#demo-one div.gfu-menu-holder div.gfu-menu-title-root
+{
+    background: black;
+}
+
+#demo-one div.gfu-menu > div:hover
+{
+    cursor: pointer;
+    background-color:#dddddd;
+}
+
+
+#demo-one div.gfu-menu > div.gfu-menu-sub
+{
+    font-style: italic;
+    font-weight: bold;
+}
+
+/**
+ * Demo Two: Fully Styled
+ */
+
+
+
 /* Basic Menu styles */
-div.gfu-menu-holder
+#demo-two div.gfu-menu-holder
 {
     background: #ffffff; /* Old browsers */
     background: -moz-linear-gradient(top, #ffffff 0%, #eeeeee 8%, #eeeeee 92%, #ffffff 100%); /* FF3.6+ */
@@ -20,7 +94,7 @@ div.gfu-menu-holder
 }
 
 
-div.gfu-menu-holder div.gfu-menu-title
+#demo-two div.gfu-menu-holder div.gfu-menu-title
 {
     font-weight: bold;
     padding: 7px 7px 7px 25px;
@@ -28,34 +102,34 @@ div.gfu-menu-holder div.gfu-menu-title
     background: url("images/top-level-back-arrow.png") no-repeat scroll 3px 5px #334B55;
 }
 
-div.gfu-menu-holder div.gfu-menu-title-root
+#demo-two div.gfu-menu-holder div.gfu-menu-title-root
 {
     background: #334B55;
 }
 
-div.gfu-menu 
+#demo-two div.gfu-menu 
 {
     position:relative;
     top: 0px;
 }
 
-div.gfu-menu > div
+#demo-two div.gfu-menu > div
 {
     border-bottom: 1px solid #AAAAAA;
     padding: 7px 5px 7px 25px;
 }
 
-div.gfu-menu > div:hover
+#demo-two div.gfu-menu > div:hover
 {
     background-color:#dddddd;
     cursor: pointer;
 }
 
-div.gfu-menu-holder div.gfu-menu-title:hover {
+#demo-two div.gfu-menu-holder div.gfu-menu-title:hover {
     background-color:#0f1a1f;
 }
 
-div.gfu-menu > div.gfu-menu-sub
+#demo-two div.gfu-menu > div.gfu-menu-sub
 {
     font-style: italic;
     padding: 7px 20px 7px 25px;
