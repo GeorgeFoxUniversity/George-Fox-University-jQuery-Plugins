@@ -232,8 +232,11 @@
     
     } //End of _init_
 
-    
-
+        
+    /*********************************
+     * Utility Functions
+     *********************************/
+   
     /**
      * Build the view for the current section of the menu
      *
@@ -244,14 +247,16 @@
     {
         // Reference data and settings to sorter name
         var data = $(this).data('gfuMenu').data
-        var titleHtml = $('<div class="gfu-menu-title">' + title + '</div>');
 
-        data.menu.empty();
-        
-        data.menu.append(titleHtml); // Create the title area of the menu
+        var titleHtml = $('<div class="gfu-menu-title">' + title + '</div>'); //Create the title object
         titleHtml.data('gfuMenu', { data : data } ); // Attach data reference to the title
         
-        // Check if title is the root title
+        
+        data.menu.empty(); // Clear the existing view
+        
+        data.menu.append(titleHtml); // Create the title area of the menu
+        
+        // Add or remove a class to indicate the we are on the root view/title
         if( data.nav.length == 0 )
         {
             data.menu.children('div.gfu-menu-title').addClass('gfu-menu-title-root');
@@ -259,8 +264,10 @@
         else
         {
             data.menu.children('div.gfu-menu-title').removeClass('gfu-menu-title-root');
-        }
-         
+        } // end of make sure the title has the right class
+        
+        
+        // Create an entry in gfu menu for each item in the user menu
         $(list).children('li').each(function()
         {
             // Create the entry item
@@ -269,13 +276,13 @@
             // Add a reference to the "real" menu item and the data object
             item.data('gfuMenu', {real : this, data : data});
 
-            if( $(this).children('ul').length != 0 )
+            if( $(this).children('ul').length != 0 ) // Create submenu entry
             {
                 item.addClass('gfu-menu-sub');
                 item.text( $(this).children('span').text() );
                 item.click(_subMenuClick_);
             }
-            else
+            else // Create normal entry
             {
                 item.text( $(this).text() );
                 item.click(_itemClick_);
@@ -284,153 +291,107 @@
             // Add the new item to the menu inside the plugin view     
             data.menu.append(item);    
         
-        });
-       
-        //reset scroll stuff
-        if( $(data.menu).height() < $(data.view).height() )
-        {
-            debug('hide');
-            if(data.up != null )
-            {
-                $(data.up).hide();
-            }
+        }); // End of populate view from user menu
 
-            if(data.down != null )
-            {
-                $(data.down).hide();
-            }
-        }
-        else // big enough window to scroll
-        {
-            //Still hide top scroll button by default
-            if(data.up != null )
-            {
-                $(data.up).hide();
-            }
-            
-            if(data.down != null )
-            {
-                $(data.down).show();
-            }
-
-        }
-
-        data.menu.css('top', '0px');
+        
+        
+        data.menu.css('top', '0px'); // Make sure menu is scrolled all the way up.
+        _updateButtonState_(0, data);
 
     } // End of buidMenu
 
-
-    function _subMenuClick_(event)
-    {   
-
-        var subMenu = [];
-        var real = $(this).data('gfuMenu').real; // The corresponding list element
-        var data = $(this).data('gfuMenu').data; // Plug-in's data store
-
-        // Save navigation information
-        last = {}
-        last['title'] = data.menu.children('div.gfu-menu-title').text()
-        last['menu'] = last['menu'] = $(real).closest('ul'); // Parent of the item clicked
-        
-        // Push the last view onto the nav stack
-        data.nav.push(last);
-        debug('Adding to stack: ', last );
-        
-        //Update the title of the menu
-        title =  $(real).children(data.subMenuTitle).text();
-        
-        subMenu = $(real).children(data.subMenu);
-        
-        _buildMenu_.apply(data.realMenu, [subMenu, title]);
-
-        if( data.afterSubMenu !== null )
-        {
-            data.afterSubMenu.apply(this, [real]);
-        }
-    }
-
-    /**
-     * Called when normal list item is clicked.  Normal means that it does not
-     * contain a submenu.
-     *
-     * @param event special DOM event for clicked element
-     */ 
-    function _itemClick_(event)
-    {
- 
-        var real = $(this).data('gfuMenu').real; // The corresponding list element
-        var data = $(this).data('gfuMenu').data; // Plug-in's data store
-        
-        if( data.itemClick !== null )
-        {
-            // If itemClick was set, run that function and pass it the 'real' list item.
-            data.itemClick.apply(this, [real]);
-        }
-        else if( $(real).children('a:first') )
-        {
-            // If itemClick was not set, go to the href of the first link.
-            window.location = $(real).children('a:first').attr('href');
-        }
-
-    } // End of _itemClick_
     
-     
-    function _buildMenuFromTitle_(event)
+    /**
+     * Calculates the menu's offset from the top of the view.
+     *
+     * @param html menu - the gfu menu
+     */
+    function _getCurrentOffset_(menu)
     {
-        var data = $(this).data('gfuMenu').data;
-         
-        if( data.nav.length > 0 )
+        var offset = $(menu).css('top');
+
+        // Parse the css to get a proper number 
+        if( offset == 'auto' )
         {
-            var prev = data.nav.pop();
-            debug( prev );
-
-            //If we are back to the root, use the root title and class
-            if( data.nav.length == 0 )
-            {
-                prev.title = data.rootTitle;
-            }
-            
-            _buildMenu_.apply(data.realMenu, [prev.menu, prev.title]);   
-        }
-
-    }
-
-    function _scroll_(distance, direction)
-    {
-
-        // Reference data and settings to sorter name
-        var data = $(this).data('gfuMenu').data
-
-
-        // Get the current position of the menu
-        var currentTop = $(data.menu).css('top');
-        var diffrence =  $(data.view).height() - $(data.menu).height();
-        
-        var move = true;
-        var newTop = -1;
-         
-        debug("Top of scroll function");
-        
-        if( currentTop == 'auto' )
-        {
-            currentTop = 0;
+            offset = 0;
         }
         else
         {
-            currentTop = currentTop.substring(0, currentTop.length - 2)
-            currentTop = parseInt(currentTop, 10);
+            offset = offset.substring(0, offset.length - 2)
+            offset = parseInt(offset, 10);
+        }
+
+        return offset;
+
+    } // End of _getCurrentOffset_
+
+
+
+    /**
+     * Controls the state of the scroll buttons.  
+     *
+     * Make sure the up and down arrows only show when it makes sense to
+     * scroll.
+     *
+     * @param integer newTop - The current offset of the menu from the top
+     * @param object data - Reference to the main data object that controls plug-in state
+     */
+    function _updateButtonState_(newTop, data)
+    {
+        // Control up button state
+        if( newTop >= 0 //Add the top of the menu
+            || $(data.menu).height() < $(data.view).height() //Menu is to sort to be scrolled
+          ) 
+        {
+            $(data.up).hide();
+        }
+        else
+        {
+            $(data.up).show();
         }
         
-
-        /* Check to see if the menu panel should move
-         */
-        if( $(data.menu).height() < $(data.view).height() || // menu to small for scrolling to make sense
-            currentTop < diffrence && direction == 'down' || // if all the "lower" content is shown
-            currentTop == 0 && direction == 'up'  // if we are at the "top" of the list going down
-          )
-        {
-             move = false;
+        // Control down button state
+        if( newTop <= ( $(data.menu).height() - $(data.view).height() ) * -1 )
+        {   
+            //Hide if only the last window of the view is visible
+            $(data.down).hide();
         }
+        else
+        {
+            $(data.down).show();
+        }
+
+    } // End of _updateButtonState_
+
+
+        
+    /*********************************
+     * Public Methods
+     *********************************/
+
+
+    /**
+     * Public scroll function
+     *
+     * Moves the gfu menu inside the view (the holder)
+     *
+     * @param integer distance - Number of pixels to scroll
+     * @param enum direction - Direction to scroll either 'up' or 'down' 
+     */
+    function _scroll_(distance, direction)
+    {
+        var move = true;  // Wither to scroll
+        var newTop = -1; // Position to scroll to
+        var data = $(this).data('gfuMenu').data // Reference to plug-in data
+        var currentTop = _getCurrentOffset_(data.menu); // Get the current offset of the menu
+                
+        debug("Top of scroll function");
+        
+        
+        // Are these needed? 
+        if( $(data.menu).height() < $(data.view).height() ){ move = false }
+        if( currentTop < ( $(data.view).height() - $(data.menu).height() )  && direction == 'down' ){ move = false }
+        if( currentTop == 0 && direction == 'up' && direction == 'down' ){ move = false }
 
         debug('Move is: ', move);
         
@@ -466,36 +427,112 @@
                 }
             }
 
-            
-
             //Scroll!
             $(data.menu).animate({top : newTop }, 'slow');
         }
         
+        _updateButtonState_(newTop, data);
+
         
-        // Up and down button hide and show 
-        if( newTop >= 0 )
-        {
-            $(data.up).hide();
-        }
-        else
-        {
-            $(data.up).show();
-        }
-
-        if( newTop <= ( $(data.menu).height() - $(data.view).height() ) * -1 )
-        {
-            $(data.down).hide();
-        }
-        else
-        {
-            $(data.down).show();
-        }
-
         
         debug( newTop );
         debug( currentTop );
-    }
+    
+    } // End of _scroll_
+
+
+    /************************************
+     * Event handlers
+     ************************************/
+
+
+    /* Event for when a subMenu is clicked
+     *
+     * @param event - dom event object
+     */
+    function _subMenuClick_(event)
+    {   
+
+        var subMenu = [];
+        var real = $(this).data('gfuMenu').real; // The corresponding list element
+        var data = $(this).data('gfuMenu').data; // Plug-in's data store
+
+        // Save navigation information
+        last = {}
+        last['title'] = data.menu.children('div.gfu-menu-title').text()
+        last['menu'] = last['menu'] = $(real).closest('ul'); // Parent of the item clicked
+        
+        // Push the last view onto the nav stack
+        data.nav.push(last);
+        debug('Adding to stack: ', last );
+        
+        //Update the title of the menu
+        title =  $(real).children(data.subMenuTitle).text();
+        
+        subMenu = $(real).children(data.subMenu);
+        
+        _buildMenu_.apply(data.realMenu, [subMenu, title]);
+
+        if( data.afterSubMenu !== null )
+        {
+            data.afterSubMenu.apply(this, [real]);
+        }
+
+    } // end of _subMenuClick_
+
+
+
+    /**
+     * Called when normal list item is clicked.  Normal means that it does not
+     * contain a submenu.
+     *
+     * @param event special DOM event for clicked element
+     */ 
+    function _itemClick_(event)
+    {
+ 
+        var real = $(this).data('gfuMenu').real; // The corresponding list element
+        var data = $(this).data('gfuMenu').data; // Plug-in's data store
+        
+        if( data.itemClick !== null )
+        {
+            // If itemClick was set, run that function and pass it the 'real' list item.
+            data.itemClick.apply(this, [real]);
+        }
+        else if( $(real).children('a:first') )
+        {
+            // If itemClick was not set, go to the href of the first link.
+            window.location = $(real).children('a:first').attr('href');
+        }
+
+    } // End of _itemClick_
+    
+    
+    /**
+     * Called with the title is clicked.
+     *
+     * If we are not on the root view, the parent menu view is built.
+     *
+     * @param event - DOM event object
+     */ 
+    function _buildMenuFromTitle_(event)
+    {
+        var data = $(this).data('gfuMenu').data;
+         
+        if( data.nav.length > 0 ) // If we are not a root
+        {
+            var prev = data.nav.pop(); // get the parent menu
+            debug( prev );
+
+            _buildMenu_.apply(data.realMenu, [prev.menu, prev.title]);   
+        }
+
+    } // End of build menu from title
+ 
+
+   
+
+    
    
 })( jQuery );
 
