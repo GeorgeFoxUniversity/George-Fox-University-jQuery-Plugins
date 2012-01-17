@@ -59,17 +59,11 @@
     
     <style type="text/css">
         
-        #demo-two-menu-wrapper
-        {
-           position: relative;
-           margin-top: 60px;
-        }
-
         div.demo
         {
         }
 
-        #demo-one-menu-wrapper
+        .demo-wrapper
         {
             float: left;
             margin-right: 30px;
@@ -100,11 +94,47 @@
 <body>
 
 
+
+<div id="intro">
+
+    <h1>Introduction</h1>
+
+    <p>
+        The <a href="http://georgefox.edu">George Fox University</a> web
+        development team needed a drilldown menu
+        for our <a href="http://www.georgefox.edu/catalog">catalog's</a>
+        navigation. None of the jQuery plug-ins we looked at quite did
+        everything we needed.  So we built our own and decided to share it
+        with the larger web community in hopes it can be useful outside of
+        George Fox. 
+    </p>
+    
+    <h2>Features</h2>
+    <p>
+        The principle features of the <strong>gfuMenu</strong> plug-in is ease
+        of styling and ability to fast forward in the menu.  This is useful if
+        you have a large menu, like a course catalog on every page.  This way
+        you can bring up the right menu section for the page you happen to be
+        on.
+    </p>
+
+    <h2>Credits</h2>
+    <ul>
+        <li>Joel Kelley (jkelley@georgefox.edu) - Developer of the plug-in</li>
+        <li>Cary Griffith (cgriffith@georgefox.edu) - Loving designed the styles George Fox uses and can be seen in Demo Two.</li>
+        <li>Peter Crackenberg (pcrackenberg@georgefox.edu) - Webmaster, project manger and code reviewer.</li>
+    </ul>
+
+</div>
+
+
+
 <div id="demo-one" class="demo">
 
+    <!-- Demo Title -->
     <h2>Demo One: Basic Menu</h2>
 
-    <div id="demo-one-menu-wrapper">
+    <div id="demo-one-menu-wrapper" class="demo-wrapper">
         <h3>Running Menu</h3>
 
         <ul id="demo-one-menu">
@@ -155,7 +185,7 @@
      
     </div>
     
-    <div id="js-view" style="float:left"> 
+    <div class="js-view" style="float:left"> 
     <h3>JavaScript for the Menu</h3>
     
     <pre class="js">
@@ -227,75 +257,124 @@
 <div id="demo-two" class="demo">
 
     <h2>Demo Two: Fully Styled Menu</h2>
-
-    <div id="demo-two-menu-wrapper">
-
+    
+    <div id="demo-two-menu-wrapper" class="demo-wrapper">
+        <h3>Running Menu</h3>
+        <div style="position:relative">
         <a id="up" href="#up">Up</a>
 
         <div id="menuHolder"></div>
 
         <a id="down" href="#down">Down</a>
+        </div>
 
     </div>
+    
+    <div class="js-view" style="float:left"> 
+    <h3>JavaScript for the Menu</h3>
+
+    <pre class="js">
+
+$(document).ready(function()
+{
+    $("#menu").gfuMenu({holderSelector: '#menuHolder', up:'#up', down:'#down', fastForward: '.selected'});
+
+    $("#up").click(function(event)
+    {
+        event.preventDefault();
+        $("#menu").gfuMenu('scroll', 250, 'up');
+    
+    });
+
+    $("#down").click(function(event)
+    {
+        event.preventDefault();
+        $("#menu").gfuMenu('scroll', 250, 'down');
+    });
 
 
-    <div id="sideNav"><!-- Start of sideNav -->
+});
+
+    </pre>
+    </div>
+
+    <div style="clear:both"></style>
+
+
+    <h3>Html for the Fast Forwarded Sub Menu</h3>
+    <pre class="html">
+&lt;li class="selected"&gt;
+    &lt;span&gt;Course Descriptions&lt;/span&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="#undergrad/curriculum/descriptions/index.html"&gt;Course Descriptions&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#undergrad/curriculum/descriptions/acct.html"&gt;Accounting (ACCT) Courses&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#undergrad/curriculum/descriptions/acla.html"&gt;American Culture and Language (ACLA) Courses&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#undergrad/curriculum/descriptions/amsl.html"&gt;American Sign Language (AMSL) Courses&lt;/a&gt;&lt;/li&gt;
+        
+        ...
+
+        &lt;li&gt;&lt;a href="#undergrad/curriculum/descriptions/writ.html"&gt;Writing (WRIT) Courses&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/li&gt;
+    </pre>
+    
+
     <ul id="menu">
-    <li><a href="../index.html">Course Catalogs</a></li>
+    <li><a href="#index.html">Course Catalogs</a></li>
     <li>
     <span>University Catalog Information</span>
     <ul>
-    <li><a href="../general/index.html">University Catalog Information</a></li>
+    <li><a href="#general/index.html">University Catalog Information</a></li>
     <li>
     <span>University Profile</span>
     <ul>
-    <li><a href="../general/profile/index.html">University Profile</a></li>
-    <li><a href="../general/profile/accreditation.html">Accreditation and Memberships</a></li>
-    <li><a href="../general/profile/faith.html">Statement of Faith</a></li>
-    <li><a href="../general/profile/heritage.html">Our Heritage</a></li>
-    <li><a href="../general/profile/locations.html">Locations</a></li>
-    <li><a href="../general/profile/mission.html">Mission, Vision and Values</a></li>
-    <li><a href="../general/profile/outcomes.html">Student Outcomes</a></li>
-    <li><a href="../general/profile/values.html">Values Statement</a></li>
+    <li><a href="#general/profile/index.html">University Profile</a></li>
+    <li><a href="#general/profile/accreditation.html">Accreditation and Memberships</a></li>
+    <li><a href="#general/profile/faith.html">Statement of Faith</a></li>
+    <li><a href="#general/profile/heritage.html">Our Heritage</a></li>
+    <li><a href="#general/profile/locations.html">Locations</a></li>
+    <li><a href="#general/profile/mission.html">Mission, Vision and Values</a></li>
+    <li><a href="#general/profile/outcomes.html">Student Outcomes</a></li>
+    <li><a href="#general/profile/values.html">Values Statement</a></li>
     </ul>
     </li>
     <li>
     <span>Legal Compliance</span>
     <ul>
-    <li><a href="../general/compliance/index.html">Legal Compliance</a></li>
-    <li><a href="../general/compliance/disabled.html">Disabled Students</a></li>
-    <li><a href="../general/compliance/drugfree.html">Drug-Free Environment</a></li>
-    <li><a href="../general/compliance/harassment.html">Anti-Harassment Policy</a></li>
-    <li><a href="../general/compliance/privacy.html">Family Educational Rights and Privacy Act</a></li>
+    <li><a href="#general/compliance/index.html">Legal Compliance</a></li>
+    <li><a href="#general/compliance/disabled.html">Disabled Students</a></li>
+    <li><a href="#general/compliance/drugfree.html">Drug-Free Environment</a></li>
+    <li><a href="#general/compliance/harassment.html">Anti-Harassment Policy</a></li>
+    <li><a href="#general/compliance/privacy.html">Family Educational Rights and Privacy Act</a></li>
     </ul>
     </li>
     <li>
     <span>Learning Environment</span>
     <ul>
-    <li><a href="../general/environment/index.html">Learning Environment</a></li>
-    <li><a href="../general/environment/centers.html">Academic Centers</a></li>
-    <li><a href="../general/environment/arc.html">Academic Resource Center</a></li>
-    <li><a href="../general/environment/career.html">Career Services</a></li>
-    <li><a href="../general/environment/health.html">Health and Counseling Services</a></li>
-    <li><a href="../general/environment/international.html">International Student Services</a></li>
-    <li><a href="../general/environment/libraries.html">Libraries</a></li>
-    <li><a href="../general/environment/multicultural.html">Multicultural Services</a></li>
-    <li><a href="../general/environment/standards.html">Standards of Conduct</a></li>
+    <li><a href="#general/environment/index.html">Learning Environment</a></li>
+    <li><a href="#general/environment/centers.html">Academic Centers</a></li>
+    <li><a href="#general/environment/arc.html">Academic Resource Center</a></li>
+    <li><a href="#general/environment/career.html">Career Services</a></li>
+    <li><a href="#general/environment/health.html">Health and Counseling Services</a></li>
+    <li><a href="#general/environment/international.html">International Student Services</a></li>
+    <li><a href="#general/environment/libraries.html">Libraries</a></li>
+    <li><a href="#general/environment/multicultural.html">Multicultural Services</a></li>
+    <li><a href="#general/environment/standards.html">Standards of Conduct</a></li>
     </ul>
     </li>
     <li>
     <span>Financial Information</span>
     <ul>
-    <li><a href="../general/finances/index.html">Financial Information</a></li>
-    <li><a href="../general/finances/veterans.html">Veterans Affairs Assistance</a></li>
+    <li><a href="#general/finances/index.html">Financial Information</a></li>
+    <li><a href="#general/finances/veterans.html">Veterans Affairs Assistance</a></li>
     </ul>
     </li>
     <li>
     <span>Academic Personnel</span>
     <ul>
-    <li><a href="../general/personnel/index.html">Academic Personnel</a></li>
-    <li><a href="../general/personnel/board.html">Board of Trustees</a></li>
-    <li><a href="../general/personnel/executive.html">Executive Leadership</a></li>
+    <li><a href="#general/personnel/index.html">Academic Personnel</a></li>
+    <li><a href="#general/personnel/board.html">Board of Trustees</a></li>
+    <li><a href="#general/personnel/executive.html">Executive Leadership</a></li>
     <li><a href="http://www.georgefox.edu/direc/faculty.html">Faculty</a></li>
     </ul>
     </li>
@@ -304,292 +383,292 @@
     <li>
     <span>Undergraduate Catalog</span>
     <ul>
-    <li><a href="../undergrad/index.html">Undergraduate Catalog</a></li>
+    <li><a href="#undergrad/index.html">Undergraduate Catalog</a></li>
     <li>
     <span>Admissions</span>
     <ul>
-    <li><a href="../undergrad/admission/index.html">Admissions</a></li>
-    <li><a href="../undergrad/admission/basis.html">Basis of Undergraduate Admission</a></li>
-    <li><a href="../undergrad/admission/freshmen.html">Admission Procedures for Freshmen</a></li>
-    <li><a href="../undergrad/admission/transfer.html">Admission Procedures and Policies for Transfer Students</a></li>
-    <li><a href="../undergrad/admission/international.html">International Students</a></li>
-    <li><a href="../undergrad/admission/former.html">Readmission of Former Students</a></li>
-    <li><a href="../undergrad/admission/honors.html">Advanced Placement</a></li>
-    <li><a href="../undergrad/admission/early.html">Early Admission of High School Students</a></li>
-    <li><a href="../undergrad/admission/adults.html">Older Adults</a></li>
-    <li><a href="../undergrad/admission/auditors.html">Auditors</a></li>
-    <li><a href="../undergrad/admission/nongraduates.html">High School Nongraduates</a></li>
-    <li><a href="../undergrad/admission/spouse.html">Spouse Enrollment Program</a></li>
+    <li><a href="#undergrad/admission/index.html">Admissions</a></li>
+    <li><a href="#undergrad/admission/basis.html">Basis of Undergraduate Admission</a></li>
+    <li><a href="#undergrad/admission/freshmen.html">Admission Procedures for Freshmen</a></li>
+    <li><a href="#undergrad/admission/transfer.html">Admission Procedures and Policies for Transfer Students</a></li>
+    <li><a href="#undergrad/admission/international.html">International Students</a></li>
+    <li><a href="#undergrad/admission/former.html">Readmission of Former Students</a></li>
+    <li><a href="#undergrad/admission/honors.html">Advanced Placement</a></li>
+    <li><a href="#undergrad/admission/early.html">Early Admission of High School Students</a></li>
+    <li><a href="#undergrad/admission/adults.html">Older Adults</a></li>
+    <li><a href="#undergrad/admission/auditors.html">Auditors</a></li>
+    <li><a href="#undergrad/admission/nongraduates.html">High School Nongraduates</a></li>
+    <li><a href="#undergrad/admission/spouse.html">Spouse Enrollment Program</a></li>
     </ul>
     </li>
     <li>
     <span>Student Life</span>
     <ul>
-    <li><a href="../undergrad/student_life/index.html">Student Life</a></li>
-    <li><a href="../undergrad/student_life/activities.html">Student Activities and Organizations</a></li>
-    <li><a href="../undergrad/student_life/advance.html">ADVANCE Leadership Development Program and Fox Mentoring Program</a></li>
-    <li><a href="../undergrad/student_life/athletics.html">Athletics</a></li>
-    <li><a href="../undergrad/student_life/formation.html">Spiritual Formation Requirements and Campus Ministries</a></li>
-    <li><a href="../undergrad/student_life/intramurals.html">Intramurals</a></li>
-    <li><a href="../undergrad/student_life/media.html">Media</a></li>
-    <li><a href="../undergrad/student_life/music.html">Music</a></li>
-    <li><a href="../undergrad/student_life/reslife.html">Residence Life</a></li>
-    <li><a href="../undergrad/student_life/social.html">Social Events</a></li>
-    <li><a href="../undergrad/student_life/studentgov.html">Student Government</a></li>
-    <li><a href="../undergrad/student_life/theatre.html">Theatre</a></li>
+    <li><a href="#undergrad/student_life/index.html">Student Life</a></li>
+    <li><a href="#undergrad/student_life/activities.html">Student Activities and Organizations</a></li>
+    <li><a href="#undergrad/student_life/advance.html">ADVANCE Leadership Development Program and Fox Mentoring Program</a></li>
+    <li><a href="#undergrad/student_life/athletics.html">Athletics</a></li>
+    <li><a href="#undergrad/student_life/formation.html">Spiritual Formation Requirements and Campus Ministries</a></li>
+    <li><a href="#undergrad/student_life/intramurals.html">Intramurals</a></li>
+    <li><a href="#undergrad/student_life/media.html">Media</a></li>
+    <li><a href="#undergrad/student_life/music.html">Music</a></li>
+    <li><a href="#undergrad/student_life/reslife.html">Residence Life</a></li>
+    <li><a href="#undergrad/student_life/social.html">Social Events</a></li>
+    <li><a href="#undergrad/student_life/studentgov.html">Student Government</a></li>
+    <li><a href="#undergrad/student_life/theatre.html">Theatre</a></li>
     </ul>
     </li>
     <li>
     <span>Academic Support Programs</span>
     <ul>
-    <li><a href="../undergrad/support/index.html">Academic Support Programs</a></li>
-    <li><a href="../undergrad/support/oncampus.html">On-Campus Academic Programs</a></li>
-    <li><a href="../undergrad/support/offcampus.html">Off-Campus Programs</a></li>
-    <li><a href="../undergrad/support/consortium.html">Consortium Visitor Program </a></li>
-    <li><a href="../undergrad/support/overseas_courses.html">Semesters Off Campus: Course Disciplines</a></li>
-    <li><a href="../undergrad/support/overseas.html">Semesters Off Campus</a></li>
-    <li><a href="../undergrad/support/juniors.html">Juniors Abroad</a></li>
-    <li><a href="../undergrad/support/eli_prog.html">English Language Institute (ELI)</a></li>
+    <li><a href="#undergrad/support/index.html">Academic Support Programs</a></li>
+    <li><a href="#undergrad/support/oncampus.html">On-Campus Academic Programs</a></li>
+    <li><a href="#undergrad/support/offcampus.html">Off-Campus Programs</a></li>
+    <li><a href="#undergrad/support/consortium.html">Consortium Visitor Program </a></li>
+    <li><a href="#undergrad/support/overseas_courses.html">Semesters Off Campus: Course Disciplines</a></li>
+    <li><a href="#undergrad/support/overseas.html">Semesters Off Campus</a></li>
+    <li><a href="#undergrad/support/juniors.html">Juniors Abroad</a></li>
+    <li><a href="#undergrad/support/eli_prog.html">English Language Institute (ELI)</a></li>
     </ul>
     </li>
     <li>
     <span>Academic Programs</span>
     <ul>
-    <li><a href="../undergrad/curriculum/index.html">Academic Programs</a></li>
-    <li><a href="../undergrad/curriculum/majorsminors.html">Degrees and Minors</a></li>
-    <li><a href="../undergrad/curriculum/degrees.html">Degrees Offered</a></li>
-    <li><a href="../undergrad/curriculum/major_req.html">Major and Minor Requirements</a></li>
-    <li><a href="../undergrad/curriculum/grad_requirements.html">Graduation Requirements</a></li>
-    <li><a href="../undergrad/curriculum/gen_ed.html">General Education Program</a></li>
-    <li><a href="../undergrad/curriculum/alt_credit.html">Alternative Credit</a></li>
-    <li><a href="../undergrad/curriculum/numbering.html">Course Numbering System</a></li>
-    <li><a href="../undergrad/curriculum/preprofessional.html">Preprofessional Programs</a></li>
-    <li><a href="../undergrad/curriculum/transfer.html">Transfer Credit Policies</a></li>
+    <li><a href="#undergrad/curriculum/index.html">Academic Programs</a></li>
+    <li><a href="#undergrad/curriculum/majorsminors.html">Degrees and Minors</a></li>
+    <li><a href="#undergrad/curriculum/degrees.html">Degrees Offered</a></li>
+    <li><a href="#undergrad/curriculum/major_req.html">Major and Minor Requirements</a></li>
+    <li><a href="#undergrad/curriculum/grad_requirements.html">Graduation Requirements</a></li>
+    <li><a href="#undergrad/curriculum/gen_ed.html">General Education Program</a></li>
+    <li><a href="#undergrad/curriculum/alt_credit.html">Alternative Credit</a></li>
+    <li><a href="#undergrad/curriculum/numbering.html">Course Numbering System</a></li>
+    <li><a href="#undergrad/curriculum/preprofessional.html">Preprofessional Programs</a></li>
+    <li><a href="#undergrad/curriculum/transfer.html">Transfer Credit Policies</a></li>
     <li>
     <span>Undergrad Academic Departments</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/index.html">Undergrad Academic Departments</a></li>
+    <li><a href="#undergrad/curriculum/departments/index.html">Undergrad Academic Departments</a></li>
     <li>
     <span>Biology Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/biology/index.html">Biology Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/biology/alhlth_major.html">Bachelors (BS) in Allied Health</a></li>
-    <li><a href="../undergrad/curriculum/departments/biology/biol_major.html">Bachelors (BS) in Biology</a></li>
-    <li><a href="../undergrad/curriculum/departments/biology/biol_major_ba.html">Bachelors (BA) in Biology</a></li>
-    <li><a href="../undergrad/curriculum/departments/biology/biol_minor.html">Biology Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/biology/index.html">Biology Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/biology/alhlth_major.html">Bachelors (BS) in Allied Health</a></li>
+    <li><a href="#undergrad/curriculum/departments/biology/biol_major.html">Bachelors (BS) in Biology</a></li>
+    <li><a href="#undergrad/curriculum/departments/biology/biol_major_ba.html">Bachelors (BA) in Biology</a></li>
+    <li><a href="#undergrad/curriculum/departments/biology/biol_minor.html">Biology Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Business and Economics Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/business/index.html">Business and Economics Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/acct_major.html">Bachelors (BA) in Accounting</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/econ_major.html">Bachelors (BA) in Economics</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/enpr_major.html">Bachelors (BA) in Entrepreneurship</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/finc_major.html">Bachelors (BA) in Finance</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/gbsn_major.html">Bachelors (BA) in Global Business</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/mgmt_major.html">Bachelors (BA) in Management</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/mktg_major.html">Bachelors (BA) in Marketing</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/acct_minor.html">Accounting Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/econ_minor.html">Economics Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/finc_minor.html">Finance Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/gbsn_minor.html">Global Business Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/lead_minor.html">Leadership Studies Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/mgmt_minor.html">Management Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/business/mktg_minor.html">Marketing Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/index.html">Business and Economics Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/acct_major.html">Bachelors (BA) in Accounting</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/econ_major.html">Bachelors (BA) in Economics</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/enpr_major.html">Bachelors (BA) in Entrepreneurship</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/finc_major.html">Bachelors (BA) in Finance</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/gbsn_major.html">Bachelors (BA) in Global Business</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/mgmt_major.html">Bachelors (BA) in Management</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/mktg_major.html">Bachelors (BA) in Marketing</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/acct_minor.html">Accounting Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/econ_minor.html">Economics Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/finc_minor.html">Finance Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/gbsn_minor.html">Global Business Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/lead_minor.html">Leadership Studies Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/mgmt_minor.html">Management Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/business/mktg_minor.html">Marketing Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Chemistry Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/chemistry/index.html">Chemistry Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/chemistry/chem_major.html">Bachelors (BS) in Chemistry</a></li>
-    <li><a href="../undergrad/curriculum/departments/chemistry/chem_minor.html">Chemistry Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/chemistry/index.html">Chemistry Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/chemistry/chem_major.html">Bachelors (BS) in Chemistry</a></li>
+    <li><a href="#undergrad/curriculum/departments/chemistry/chem_minor.html">Chemistry Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Communication Arts Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/index.html">Communication Arts Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/cmco_major.html">Bachelors (BA) in Cinema and Media Communication</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/comm_major.html">Bachelors (BA) in Communication Arts</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/jour_major.html">Bachelors (BA) in Journalism</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/orgcomm_major.html">Bachelors (BA) in Organizational Communication</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/span_major.html">Bachelors (BA) in Spanish</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/acla_major.html">BA (Post Baccalaureate) in American Culture and Language</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/sheng_interdisc.html">Bachelors (Post Baccalaureate BA) in Interdisciplinary Studies: Sheng–te</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/cmco_minor.html">Cinema and Media Communication Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/comm_minor.html">Communication Arts Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/french_minor.html">French Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/romance_minor.html">Romance Languages Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/span_minor.html">Spanish Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/comm_arts/tesol_minor.html">TESOL Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/index.html">Communication Arts Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/cmco_major.html">Bachelors (BA) in Cinema and Media Communication</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/comm_major.html">Bachelors (BA) in Communication Arts</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/jour_major.html">Bachelors (BA) in Journalism</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/orgcomm_major.html">Bachelors (BA) in Organizational Communication</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/span_major.html">Bachelors (BA) in Spanish</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/acla_major.html">BA (Post Baccalaureate) in American Culture and Language</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/sheng_interdisc.html">Bachelors (Post Baccalaureate BA) in Interdisciplinary Studies: Sheng–te</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/cmco_minor.html">Cinema and Media Communication Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/comm_minor.html">Communication Arts Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/french_minor.html">French Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/romance_minor.html">Romance Languages Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/span_minor.html">Spanish Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/comm_arts/tesol_minor.html">TESOL Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Computer and Information Science Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/computer_science/index.html">Computer and Information Science Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/computer_science/cs_major.html">Bachelors (BS) in Computer Science</a></li>
-    <li><a href="../undergrad/curriculum/departments/computer_science/is_major.html">Bachelors (BS) in Information Systems</a></li>
-    <li><a href="../undergrad/curriculum/departments/computer_science/csis_minor.html">Computer and Information Science Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/computer_science/index.html">Computer and Information Science Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/computer_science/cs_major.html">Bachelors (BS) in Computer Science</a></li>
+    <li><a href="#undergrad/curriculum/departments/computer_science/is_major.html">Bachelors (BS) in Information Systems</a></li>
+    <li><a href="#undergrad/curriculum/departments/computer_science/csis_minor.html">Computer and Information Science Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Teacher Education Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/education/index.html">Teacher Education Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/education/eled_major.html">Bachelors (BS) in Elementary Education</a></li>
+    <li><a href="#undergrad/curriculum/departments/education/index.html">Teacher Education Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/education/eled_major.html">Bachelors (BS) in Elementary Education</a></li>
     </ul>
     </li>
     <li>
     <span>Engineering Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/engineering/index.html">Engineering Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/engineering/applied_major.html">Bachelors (BS) in Applied Science</a></li>
-    <li><a href="../undergrad/curriculum/departments/engineering/engr_major.html">Bachelors (BS) in Engineering</a></li>
+    <li><a href="#undergrad/curriculum/departments/engineering/index.html">Engineering Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/engineering/applied_major.html">Bachelors (BS) in Applied Science</a></li>
+    <li><a href="#undergrad/curriculum/departments/engineering/engr_major.html">Bachelors (BS) in Engineering</a></li>
     </ul>
     </li>
     <li>
     <span>English Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/english/index.html">English Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/english/lit_minor.html">Literature Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/english/english_major.html">Bachelors (BA) in English</a></li>
-    <li><a href="../undergrad/curriculum/departments/english/womenstdies_minor.html">Women's Studies Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/english/writ_minor.html">Writing Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/english/index.html">English Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/english/lit_minor.html">Literature Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/english/english_major.html">Bachelors (BA) in English</a></li>
+    <li><a href="#undergrad/curriculum/departments/english/womenstdies_minor.html">Women's Studies Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/english/writ_minor.html">Writing Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Family and Consumer Sciences Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/fam_consum_science/index.html">Family and Consumer Sciences Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/fam_consum_science/fcsc_major.html">Bachelors (BS) in Family and Consumer Sciences</a></li>
-    <li><a href="../undergrad/curriculum/departments/fam_consum_science/fashion_minor.html">Fashion Merchandising/Interior Design Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/fam_consum_science/fcsc_minor.html">Family and Consumer Sciences Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/fam_consum_science/foods_minor.html">Foods and Nutrition Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/fam_consum_science/index.html">Family and Consumer Sciences Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/fam_consum_science/fcsc_major.html">Bachelors (BS) in Family and Consumer Sciences</a></li>
+    <li><a href="#undergrad/curriculum/departments/fam_consum_science/fashion_minor.html">Fashion Merchandising/Interior Design Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/fam_consum_science/fcsc_minor.html">Family and Consumer Sciences Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/fam_consum_science/foods_minor.html">Foods and Nutrition Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Health and Human Performance Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/health_human_perf/index.html">Health and Human Performance Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/health_human_perf/athl_degree.html">Bachelors (BSAT) in Athletic Training</a></li>
-    <li><a href="../undergrad/curriculum/departments/health_human_perf/hhp_major.html">Bachelors (BS) in Health and Human Performance</a></li>
-    <li><a href="../undergrad/curriculum/departments/health_human_perf/hhp_interdisc.html">Bachelors (BS) in Interdisciplinary Studies: Health and Human Performance</a></li>
-    <li><a href="../undergrad/curriculum/departments/biology/alhlth_major.html">Bachelors (BS) in Allied Health</a></li>
-    <li><a href="../undergrad/curriculum/departments/health_human_perf/coach_minor.html">Coaching Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/health_human_perf/hlth_minor.html">Health Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/health_human_perf/hlthteach_minor.html">Health Teaching Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/health_human_perf/rec_minor.html">Recreation Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/health_human_perf/index.html">Health and Human Performance Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/health_human_perf/athl_degree.html">Bachelors (BSAT) in Athletic Training</a></li>
+    <li><a href="#undergrad/curriculum/departments/health_human_perf/hhp_major.html">Bachelors (BS) in Health and Human Performance</a></li>
+    <li><a href="#undergrad/curriculum/departments/health_human_perf/hhp_interdisc.html">Bachelors (BS) in Interdisciplinary Studies: Health and Human Performance</a></li>
+    <li><a href="#undergrad/curriculum/departments/biology/alhlth_major.html">Bachelors (BS) in Allied Health</a></li>
+    <li><a href="#undergrad/curriculum/departments/health_human_perf/coach_minor.html">Coaching Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/health_human_perf/hlth_minor.html">Health Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/health_human_perf/hlthteach_minor.html">Health Teaching Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/health_human_perf/rec_minor.html">Recreation Minor</a></li>
     </ul>
     </li>
     <li>
     <span>History Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/history/index.html">History Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/history/hist_major.html">Bachelors (BA) in History</a></li>
-    <li><a href="../undergrad/curriculum/departments/history/hist_minor.html">History Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/history/index.html">History Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/history/hist_major.html">Bachelors (BA) in History</a></li>
+    <li><a href="#undergrad/curriculum/departments/history/hist_minor.html">History Minor</a></li>
     </ul>
     </li>
     <li>
     <span>International Studies Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/intl_studies/index.html">International Studies Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/intl_studies/intl_major.html">Bachelors (BA) in International Studies</a></li>
-    <li><a href="../undergrad/curriculum/departments/intl_studies/intl_minor.html">International Studies Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/intl_studies/index.html">International Studies Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/intl_studies/intl_major.html">Bachelors (BA) in International Studies</a></li>
+    <li><a href="#undergrad/curriculum/departments/intl_studies/intl_minor.html">International Studies Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Mathematics Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/math/index.html">Mathematics Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/math/math_major.html">Bachelors (BS) in Mathematics</a></li>
-    <li><a href="../undergrad/curriculum/departments/math/math_minor.html">Mathematics Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/math/index.html">Mathematics Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/math/math_major.html">Bachelors (BS) in Mathematics</a></li>
+    <li><a href="#undergrad/curriculum/departments/math/math_minor.html">Mathematics Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Nursing Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/nursing/index.html">Nursing Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/nursing/nurs_major.html">Bachelors (BS) in Nursing</a></li>
+    <li><a href="#undergrad/curriculum/departments/nursing/index.html">Nursing Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/nursing/nurs_major.html">Bachelors (BS) in Nursing</a></li>
     </ul>
     </li>
     <li>
     <span>Performing Arts Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/index.html">Performing Arts Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/musi_major.html">Bachelors (BA) in Music</a></li>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/musi_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Music</a></li>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/musiced_major.html">Bachelors (BA) in Music Education</a></li>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/thea_major.html">Bachelors (BA) Theatre</a></li>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/thea_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Theatre</a></li>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/church_minor.html">Church Music Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/musi_minor.html">Music Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/musi_theatre_minor.html">Music Theatre Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/performing_arts/thea_minor.html">Theatre Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/index.html">Performing Arts Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/musi_major.html">Bachelors (BA) in Music</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/musi_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Music</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/musiced_major.html">Bachelors (BA) in Music Education</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/thea_major.html">Bachelors (BA) Theatre</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/thea_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Theatre</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/church_minor.html">Church Music Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/musi_minor.html">Music Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/musi_theatre_minor.html">Music Theatre Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/performing_arts/thea_minor.html">Theatre Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Political Science Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/political_science/index.html">Political Science Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/political_science/psci_major.html">Bachelors (BA) in Political Science</a></li>
-    <li><a href="../undergrad/curriculum/departments/political_science/peace_minor.html">Peace Studies Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/political_science/psci_minor.html">Political Science Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/political_science/conflict_mgmt_cert.html">Certificate in Conflict Management</a></li>
+    <li><a href="#undergrad/curriculum/departments/political_science/index.html">Political Science Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/political_science/psci_major.html">Bachelors (BA) in Political Science</a></li>
+    <li><a href="#undergrad/curriculum/departments/political_science/peace_minor.html">Peace Studies Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/political_science/psci_minor.html">Political Science Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/political_science/conflict_mgmt_cert.html">Certificate in Conflict Management</a></li>
     </ul>
     </li>
     <li>
     <span>Psychology Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/psychology/index.html">Psychology Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/psychology/cogsci_major.html">Bachelors (BS) in Cognitive Science</a></li>
-    <li><a href="../undergrad/curriculum/departments/psychology/psyc_major_ba.html">Bachelors (BA) in Psychology</a></li>
-    <li><a href="../undergrad/curriculum/departments/psychology/psyc_major_bs.html">Bachelors (BS) in Psychology</a></li>
-    <li><a href="../undergrad/curriculum/departments/psychology/psyc_minor.html">Psychology Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/psychology/index.html">Psychology Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/psychology/cogsci_major.html">Bachelors (BS) in Cognitive Science</a></li>
+    <li><a href="#undergrad/curriculum/departments/psychology/psyc_major_ba.html">Bachelors (BA) in Psychology</a></li>
+    <li><a href="#undergrad/curriculum/departments/psychology/psyc_major_bs.html">Bachelors (BS) in Psychology</a></li>
+    <li><a href="#undergrad/curriculum/departments/psychology/psyc_minor.html">Psychology Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Religious Studies Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/index.html">Religious Studies Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/bibl_major.html">Bachelors (BA) in Biblical Studies</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/bibl_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Biblical Studies</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/cmin_major.html">Bachelors (BA) in Christian Ministries</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/cmin_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Christian Ministries</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/phil_major.html">Bachelors (BA) in Philosophy</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/reli_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Religion </a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/bibl_minor.html">Biblical Studies Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/camp_admin_minor.html">Camping: Administrative Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/camp_prog_minor.html">Camping: Programming Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/church_rec_minor.html">Christian Ministries: Church Recreation Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/ed_min_minor.html">Christian Ministries: Educational Ministry Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/missions_minor.html">Christian Ministries: Missions Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/youth_min_minor.html">Christian Ministries: Youth Ministry Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/phil_minor.html">Philosophy Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/quaker_studies_minor.html">Quaker Studies Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/religious_studies/reli_minor.html">Religion Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/index.html">Religious Studies Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/bibl_major.html">Bachelors (BA) in Biblical Studies</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/bibl_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Biblical Studies</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/cmin_major.html">Bachelors (BA) in Christian Ministries</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/cmin_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Christian Ministries</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/phil_major.html">Bachelors (BA) in Philosophy</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/reli_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Religion </a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/bibl_minor.html">Biblical Studies Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/camp_admin_minor.html">Camping: Administrative Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/camp_prog_minor.html">Camping: Programming Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/church_rec_minor.html">Christian Ministries: Church Recreation Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/ed_min_minor.html">Christian Ministries: Educational Ministry Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/missions_minor.html">Christian Ministries: Missions Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/youth_min_minor.html">Christian Ministries: Youth Ministry Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/phil_minor.html">Philosophy Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/quaker_studies_minor.html">Quaker Studies Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/religious_studies/reli_minor.html">Religion Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Sociology/Social Work Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/sociology/index.html">Sociology/Social Work Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/sociology/swrk_degree.html">Bachelors (BSW) in Social Work</a></li>
-    <li><a href="../undergrad/curriculum/departments/sociology/soci_major.html">Bachelors (BA) in Sociology</a></li>
-    <li><a href="../undergrad/curriculum/departments/sociology/socialwel_minor.html">Social Welfare Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/sociology/soci_minor.html">Sociology Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/sociology/index.html">Sociology/Social Work Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/sociology/swrk_degree.html">Bachelors (BSW) in Social Work</a></li>
+    <li><a href="#undergrad/curriculum/departments/sociology/soci_major.html">Bachelors (BA) in Sociology</a></li>
+    <li><a href="#undergrad/curriculum/departments/sociology/socialwel_minor.html">Social Welfare Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/sociology/soci_minor.html">Sociology Minor</a></li>
     </ul>
     </li>
     <li>
     <span>Visual Arts Department</span>
     <ul>
-    <li><a href="../undergrad/curriculum/departments/visual_arts/index.html">Visual Arts Department</a></li>
-    <li><a href="../undergrad/curriculum/departments/visual_arts/art_major.html">Bachelors (BA) in Art</a></li>
-    <li><a href="../undergrad/curriculum/departments/visual_arts/art_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Art </a></li>
-    <li><a href="../undergrad/curriculum/departments/visual_arts/art_history_minor.html">Art History Minor</a></li>
-    <li><a href="../undergrad/curriculum/departments/visual_arts/art_minor.html">Art Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/visual_arts/index.html">Visual Arts Department</a></li>
+    <li><a href="#undergrad/curriculum/departments/visual_arts/art_major.html">Bachelors (BA) in Art</a></li>
+    <li><a href="#undergrad/curriculum/departments/visual_arts/art_interdisc.html">Bachelors (BA) in Interdisciplinary Studies: Art </a></li>
+    <li><a href="#undergrad/curriculum/departments/visual_arts/art_history_minor.html">Art History Minor</a></li>
+    <li><a href="#undergrad/curriculum/departments/visual_arts/art_minor.html">Art Minor</a></li>
     </ul>
     </li>
     </ul>
@@ -597,62 +676,62 @@
     <li class="selected">
     <span>Course Descriptions</span>
     <ul>
-    <li><a href="../undergrad/curriculum/descriptions/index.html">Course Descriptions</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/acct.html">Accounting (ACCT) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/acla.html">American Culture and Language (ACLA) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/amsl.html">American Sign Language (AMSL) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/arts.html">Art (ARTS) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/bibl.html">Biblical Studies (BIBL) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/biol.html">Biology (BIOL) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/busn.html">Business (BUSN) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/chem.html">Chemistry (CHEM) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/chmn.html">Christian Ministries (CHMN) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/cmco.html">Cinema and Media Communication (CMCO) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/csis.html">Computer and Information Science (CSIS) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/comm.html">Communication Arts (COMM) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/econ.html">Economics (ECON) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/educ.html">Education (EDUC) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/engc.html">Engineering, Civil (ENGC) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/enge.html">Engineering, Electrical (ENGE) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/engm.html">Engineering, Mechanical (ENGM) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/engr.html">Engineering, General (ENGR) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/enpr.html">Entrepreneurship (ENPR) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/esla.html">English as a Second Language (ESLA) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/fcsc.html">Family and Consumer Sciences (FCSC) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/finc.html">Finance (FINC) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/fren.html">French (FREN) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/gbsn.html">Global Business (GBSN) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/geed.html">General Education (GEED) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/geog.html">Geography (GEOG) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/grek.html">Greek (GREK) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/grmn.html">German (GRMN) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/gsci.html">General Science (GSCI) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/hebr.html">Hebrew (HEBR) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/hhpa.html">Health and Human Performance Activities (HHPA) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/hhpe.html">Health and Human Performance Education (HHPE) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/hist.html">History (HIST) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/hlth.html">Health Education (HLTH) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/intl.html">International Studies (INTL) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/jour.html">Journalism (JOUR) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/jpns.html">Japanese (JPNS) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/lead.html">Leadership Studies (LEAD) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/litr.html">Literature (LITR) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/math.html">Mathematics (MATH) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/mgmt.html">Management (MGMT) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/mktg.html">Marketing (MKTG) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/musa.html">Music, Applied and Ensembles (MUSA) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/musi.html">Music , Theory and Literature (MUSI) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/nurs.html">Nursing (NURS) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/phil.html">Philosophy (PHIL) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/phys.html">Physics (PHYS) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/psci.html">Political Science (PSCI) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/psyc.html">Psychology (PSYC) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/reli.html">Religion (RELI) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/soci.html">Sociology (SOCI) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/span.html">Spanish (SPAN) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/swrk.html">Social Work (SWRK) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/thea.html">Theatre (THEA) Courses</a></li>
-    <li><a href="../undergrad/curriculum/descriptions/writ.html">Writing (WRIT) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/index.html">Course Descriptions</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/acct.html">Accounting (ACCT) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/acla.html">American Culture and Language (ACLA) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/amsl.html">American Sign Language (AMSL) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/arts.html">Art (ARTS) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/bibl.html">Biblical Studies (BIBL) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/biol.html">Biology (BIOL) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/busn.html">Business (BUSN) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/chem.html">Chemistry (CHEM) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/chmn.html">Christian Ministries (CHMN) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/cmco.html">Cinema and Media Communication (CMCO) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/csis.html">Computer and Information Science (CSIS) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/comm.html">Communication Arts (COMM) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/econ.html">Economics (ECON) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/educ.html">Education (EDUC) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/engc.html">Engineering, Civil (ENGC) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/enge.html">Engineering, Electrical (ENGE) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/engm.html">Engineering, Mechanical (ENGM) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/engr.html">Engineering, General (ENGR) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/enpr.html">Entrepreneurship (ENPR) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/esla.html">English as a Second Language (ESLA) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/fcsc.html">Family and Consumer Sciences (FCSC) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/finc.html">Finance (FINC) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/fren.html">French (FREN) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/gbsn.html">Global Business (GBSN) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/geed.html">General Education (GEED) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/geog.html">Geography (GEOG) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/grek.html">Greek (GREK) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/grmn.html">German (GRMN) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/gsci.html">General Science (GSCI) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/hebr.html">Hebrew (HEBR) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/hhpa.html">Health and Human Performance Activities (HHPA) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/hhpe.html">Health and Human Performance Education (HHPE) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/hist.html">History (HIST) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/hlth.html">Health Education (HLTH) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/intl.html">International Studies (INTL) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/jour.html">Journalism (JOUR) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/jpns.html">Japanese (JPNS) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/lead.html">Leadership Studies (LEAD) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/litr.html">Literature (LITR) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/math.html">Mathematics (MATH) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/mgmt.html">Management (MGMT) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/mktg.html">Marketing (MKTG) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/musa.html">Music, Applied and Ensembles (MUSA) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/musi.html">Music , Theory and Literature (MUSI) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/nurs.html">Nursing (NURS) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/phil.html">Philosophy (PHIL) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/phys.html">Physics (PHYS) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/psci.html">Political Science (PSCI) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/psyc.html">Psychology (PSYC) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/reli.html">Religion (RELI) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/soci.html">Sociology (SOCI) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/span.html">Spanish (SPAN) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/swrk.html">Social Work (SWRK) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/thea.html">Theatre (THEA) Courses</a></li>
+    <li><a href="#undergrad/curriculum/descriptions/writ.html">Writing (WRIT) Courses</a></li>
     </ul>
     </li>
     </ul>
@@ -662,36 +741,36 @@
     <li>
     <span>Degree Completion Catalog</span>
     <ul>
-    <li><a href="../degcomp/index.html">Degree Completion Catalog</a></li>
+    <li><a href="#degcomp/index.html">Degree Completion Catalog</a></li>
     <li>
     <span>Degree Completion Admissions</span>
     <ul>
-    <li><a href="../degcomp/admission/index.html">Degree Completion Admissions</a></li>
+    <li><a href="#degcomp/admission/index.html">Degree Completion Admissions</a></li>
     </ul>
     </li>
     <li>
     <span>Degree Completion Academic Programs</span>
     <ul>
-    <li><a href="../degcomp/curriculum/index.html">Degree Completion Academic Programs</a></li>
+    <li><a href="#degcomp/curriculum/index.html">Degree Completion Academic Programs</a></li>
     <li>
     <span>Degree Completion Course Descriptions</span>
     <ul>
-    <li><a href="../degcomp/curriculum/descriptions/index.html">Degree Completion Course Descriptions</a></li>
-    <li><a href="../degcomp/curriculum/descriptions/eled.html">Elementary Education (ELED) Courses</a></li>
-    <li><a href="../degcomp/curriculum/descriptions/mbis.html">Management and Business Information Systems (MBIS) Courses</a></li>
-    <li><a href="../degcomp/curriculum/descriptions/mgha.html">Health Administration (MGHA) Courses</a></li>
-    <li><a href="../degcomp/curriculum/descriptions/mgol.html">Management and Organizational Leadership (MGOL) Courses</a></li>
-    <li><a href="../degcomp/curriculum/descriptions/mpjm.html">Project Management (MPJM) Courses</a></li>
-    <li><a href="../degcomp/curriculum/descriptions/msbs.html">Social and Behavioral Studies (MSBS) Courses</a></li>
-    <li><a href="../degcomp/curriculum/descriptions/tmgt.html">Technology Management (TMGT) Courses</a></li>
+    <li><a href="#degcomp/curriculum/descriptions/index.html">Degree Completion Course Descriptions</a></li>
+    <li><a href="#degcomp/curriculum/descriptions/eled.html">Elementary Education (ELED) Courses</a></li>
+    <li><a href="#degcomp/curriculum/descriptions/mbis.html">Management and Business Information Systems (MBIS) Courses</a></li>
+    <li><a href="#degcomp/curriculum/descriptions/mgha.html">Health Administration (MGHA) Courses</a></li>
+    <li><a href="#degcomp/curriculum/descriptions/mgol.html">Management and Organizational Leadership (MGOL) Courses</a></li>
+    <li><a href="#degcomp/curriculum/descriptions/mpjm.html">Project Management (MPJM) Courses</a></li>
+    <li><a href="#degcomp/curriculum/descriptions/msbs.html">Social and Behavioral Studies (MSBS) Courses</a></li>
+    <li><a href="#degcomp/curriculum/descriptions/tmgt.html">Technology Management (TMGT) Courses</a></li>
     </ul>
     </li>
-    <li><a href="../degcomp/curriculum/soe_degcomp_gen_ed.html">Degree Completion General Education Requirements—School of Education Programs</a></li>
-    <li><a href="../degcomp/curriculum/sps_degcomp_gen_ed.html">Degree Completion General Education Requirements—Adult Degree Programs</a></li>
-    <li><a href="../degcomp/curriculum/prior_learn.html">Credit for Prior Learning</a></li>
-    <li><a href="../degcomp/curriculum/alt_credit.html">Alternative Credit</a></li>
-    <li><a href="../degcomp/curriculum/majorminorreq.html">Degree Completion Major Requirements</a></li>
-    <li><a href="../degcomp/curriculum/majorsminors.html">Degree Completion Majors and Minors</a></li>
+    <li><a href="#degcomp/curriculum/soe_degcomp_gen_ed.html">Degree Completion General Education Requirements—School of Education Programs</a></li>
+    <li><a href="#degcomp/curriculum/sps_degcomp_gen_ed.html">Degree Completion General Education Requirements—Adult Degree Programs</a></li>
+    <li><a href="#degcomp/curriculum/prior_learn.html">Credit for Prior Learning</a></li>
+    <li><a href="#degcomp/curriculum/alt_credit.html">Alternative Credit</a></li>
+    <li><a href="#degcomp/curriculum/majorminorreq.html">Degree Completion Major Requirements</a></li>
+    <li><a href="#degcomp/curriculum/majorsminors.html">Degree Completion Majors and Minors</a></li>
     </ul>
     </li>
     </ul>
@@ -852,115 +931,115 @@
     <li>
     <span>Academic Handbook</span>
     <ul>
-    <li><a href="../handbook/index.html">Academic Handbook</a></li>
-    <li><a href="../handbook/communications.html">Communications Statement</a></li>
+    <li><a href="#handbook/index.html">Academic Handbook</a></li>
+    <li><a href="#handbook/communications.html">Communications Statement</a></li>
     <li>
     <span>Academic Policies</span>
     <ul>
-    <li><a href="../handbook/academic/index.html">Academic Policies</a></li>
+    <li><a href="#handbook/academic/index.html">Academic Policies</a></li>
     <li>
     <span>Advising</span>
     <ul>
-    <li><a href="../handbook/academic/advising/index.html">Advising</a></li>
-    <li><a href="../handbook/academic/advising/load.html">Academic Course Load</a></li>
-    <li><a href="../handbook/academic/advising/major.html">Declaring a Major</a></li>
+    <li><a href="#handbook/academic/advising/index.html">Advising</a></li>
+    <li><a href="#handbook/academic/advising/load.html">Academic Course Load</a></li>
+    <li><a href="#handbook/academic/advising/major.html">Declaring a Major</a></li>
     <li>
     <span>Alternative Credit</span>
     <ul>
-    <li><a href="../handbook/academic/advising/alternative_credit/index.html">Alternative Credit</a></li>
-    <li><a href="../handbook/academic/advising/alternative_credit/ap.html">Advanced Placement Coursework</a></li>
-    <li><a href="../handbook/academic/advising/alternative_credit/clep.html">CLEP Credit</a></li>
-    <li><a href="../handbook/academic/advising/alternative_credit/ib.html">International Baccalaureate Coursework </a></li>
-    <li><a href="../handbook/academic/advising/alternative_credit/advanced_standing.html">Advanced Standing</a></li>
-    <li><a href="../handbook/academic/advising/alternative_credit/waiver.html">Waiver of Required Courses</a></li>
+    <li><a href="#handbook/academic/advising/alternative_credit/index.html">Alternative Credit</a></li>
+    <li><a href="#handbook/academic/advising/alternative_credit/ap.html">Advanced Placement Coursework</a></li>
+    <li><a href="#handbook/academic/advising/alternative_credit/clep.html">CLEP Credit</a></li>
+    <li><a href="#handbook/academic/advising/alternative_credit/ib.html">International Baccalaureate Coursework </a></li>
+    <li><a href="#handbook/academic/advising/alternative_credit/advanced_standing.html">Advanced Standing</a></li>
+    <li><a href="#handbook/academic/advising/alternative_credit/waiver.html">Waiver of Required Courses</a></li>
     </ul>
     </li>
-    <li><a href="../handbook/academic/advising/transfer.html">Transfer of Credits</a></li>
-    <li><a href="../handbook/academic/advising/international.html">International Transfer Evaluations</a></li>
+    <li><a href="#handbook/academic/advising/transfer.html">Transfer of Credits</a></li>
+    <li><a href="#handbook/academic/advising/international.html">International Transfer Evaluations</a></li>
     </ul>
     </li>
     <li>
     <span>Academic Records</span>
     <ul>
-    <li><a href="../handbook/academic/records/index.html">Academic Records</a></li>
-    <li><a href="../handbook/academic/records/passwords.html">Student Passwords</a></li>
-    <li><a href="../handbook/academic/records/directory_info.html">Directory Information</a></li>
-    <li><a href="../handbook/academic/records/id_cards.html">Student ID Cards</a></li>
-    <li><a href="../handbook/academic/records/name.html">Student Name</a></li>
-    <li><a href="../handbook/academic/records/appeals.html">Academic Appeals</a></li>
+    <li><a href="#handbook/academic/records/index.html">Academic Records</a></li>
+    <li><a href="#handbook/academic/records/passwords.html">Student Passwords</a></li>
+    <li><a href="#handbook/academic/records/directory_info.html">Directory Information</a></li>
+    <li><a href="#handbook/academic/records/id_cards.html">Student ID Cards</a></li>
+    <li><a href="#handbook/academic/records/name.html">Student Name</a></li>
+    <li><a href="#handbook/academic/records/appeals.html">Academic Appeals</a></li>
     </ul>
     </li>
     <li>
     <span>Enrollment</span>
     <ul>
-    <li><a href="../handbook/academic/enrollment/index.html">Enrollment</a></li>
+    <li><a href="#handbook/academic/enrollment/index.html">Enrollment</a></li>
     <li>
     <span>Registration</span>
     <ul>
-    <li><a href="../handbook/academic/enrollment/registration/index.html">Registration</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/changes.html">Registration Changes</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/wth_course.html">Withdrawal from Courses</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/responsibility.html">Responsibility for Schedule Changes</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/wait_list.html">Waitlisting Policy</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/field_ed.html">Field Education</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/irregular.html">Irregular Credit Hour Course Registration</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/special_study.html">Special Study Courses</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/audit.html">Auditing Classes</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/p_np.html">Pass/No Pass Registration Option</a></li>
-    <li><a href="../handbook/academic/enrollment/registration/oica.html">OICA Cross-Registration</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/index.html">Registration</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/changes.html">Registration Changes</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/wth_course.html">Withdrawal from Courses</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/responsibility.html">Responsibility for Schedule Changes</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/wait_list.html">Waitlisting Policy</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/field_ed.html">Field Education</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/irregular.html">Irregular Credit Hour Course Registration</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/special_study.html">Special Study Courses</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/audit.html">Auditing Classes</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/p_np.html">Pass/No Pass Registration Option</a></li>
+    <li><a href="#handbook/academic/enrollment/registration/oica.html">OICA Cross-Registration</a></li>
     </ul>
     </li>
-    <li><a href="../handbook/academic/enrollment/verification.html">Enrollment Verification</a></li>
+    <li><a href="#handbook/academic/enrollment/verification.html">Enrollment Verification</a></li>
     <li>
     <span>Student Classification</span>
     <ul>
-    <li><a href="../handbook/academic/enrollment/classification/index.html">Student Classification</a></li>
-    <li><a href="../handbook/academic/enrollment/classification/ft_status.html">Full-time Status</a></li>
-    <li><a href="../handbook/academic/enrollment/classification/regular.html">Regular Students</a></li>
-    <li><a href="../handbook/academic/enrollment/classification/special.html">Special Students</a></li>
-    <li><a href="../handbook/academic/enrollment/classification/probation.html">Probational and Provisional Students</a></li>
-    <li><a href="../handbook/academic/enrollment/classification/auditor.html">Auditors</a></li>
-    <li><a href="../handbook/academic/enrollment/classification/va.html">VA Students</a></li>
-    <li><a href="../handbook/academic/enrollment/classification/rotc.html">ROTC Program</a></li>
+    <li><a href="#handbook/academic/enrollment/classification/index.html">Student Classification</a></li>
+    <li><a href="#handbook/academic/enrollment/classification/ft_status.html">Full-time Status</a></li>
+    <li><a href="#handbook/academic/enrollment/classification/regular.html">Regular Students</a></li>
+    <li><a href="#handbook/academic/enrollment/classification/special.html">Special Students</a></li>
+    <li><a href="#handbook/academic/enrollment/classification/probation.html">Probational and Provisional Students</a></li>
+    <li><a href="#handbook/academic/enrollment/classification/auditor.html">Auditors</a></li>
+    <li><a href="#handbook/academic/enrollment/classification/va.html">VA Students</a></li>
+    <li><a href="#handbook/academic/enrollment/classification/rotc.html">ROTC Program</a></li>
     </ul>
     </li>
-    <li><a href="../handbook/academic/enrollment/attendance.html">Class Attendance</a></li>
-    <li><a href="../handbook/academic/enrollment/finals.html">Final Examinations</a></li>
-    <li><a href="../handbook/academic/enrollment/reclassify.html">Change to Another Degree Program</a></li>
-    <li><a href="../handbook/academic/enrollment/concurrent.html">Concurrent Enrollment in Other Institutions</a></li>
-    <li><a href="../handbook/academic/enrollment/off-campus.html">Off-Campus Study</a></li>
-    <li><a href="../handbook/academic/enrollment/loa.html">Leave of Absence</a></li>
-    <li><a href="../handbook/academic/enrollment/withdrawal.html">Official Withdrawal from the University</a></li>
-    <li><a href="../handbook/academic/enrollment/readmission.html">Readmission Following Withdrawal</a></li>
+    <li><a href="#handbook/academic/enrollment/attendance.html">Class Attendance</a></li>
+    <li><a href="#handbook/academic/enrollment/finals.html">Final Examinations</a></li>
+    <li><a href="#handbook/academic/enrollment/reclassify.html">Change to Another Degree Program</a></li>
+    <li><a href="#handbook/academic/enrollment/concurrent.html">Concurrent Enrollment in Other Institutions</a></li>
+    <li><a href="#handbook/academic/enrollment/off-campus.html">Off-Campus Study</a></li>
+    <li><a href="#handbook/academic/enrollment/loa.html">Leave of Absence</a></li>
+    <li><a href="#handbook/academic/enrollment/withdrawal.html">Official Withdrawal from the University</a></li>
+    <li><a href="#handbook/academic/enrollment/readmission.html">Readmission Following Withdrawal</a></li>
     </ul>
     </li>
     <li>
     <span>Grading System</span>
     <ul>
-    <li><a href="../handbook/academic/grading/index.html">Grading System</a></li>
-    <li><a href="../handbook/academic/grading/honors.html">Graduation Honors</a></li>
-    <li><a href="../handbook/academic/grading/incomplete.html">Incomplete Grade Policy</a></li>
-    <li><a href="../handbook/academic/grading/appeal.html">Appeal of Grades</a></li>
+    <li><a href="#handbook/academic/grading/index.html">Grading System</a></li>
+    <li><a href="#handbook/academic/grading/honors.html">Graduation Honors</a></li>
+    <li><a href="#handbook/academic/grading/incomplete.html">Incomplete Grade Policy</a></li>
+    <li><a href="#handbook/academic/grading/appeal.html">Appeal of Grades</a></li>
     </ul>
     </li>
     <li>
     <span>Academic Standing</span>
     <ul>
-    <li><a href="../handbook/academic/standing/index.html">Academic Standing</a></li>
-    <li><a href="../handbook/academic/standing/honesty.html">Academic Honesty</a></li>
-    <li><a href="../handbook/academic/standing/good_standing.html">Good Standing</a></li>
-    <li><a href="../handbook/academic/standing/deans_list.html">Dean's List</a></li>
-    <li><a href="../handbook/academic/standing/sap.html">Satisfactory Academic Progress and Eligibility</a></li>
-    <li><a href="../handbook/academic/standing/probation.html">Academic Warning, Probation, Suspension, and Dismissal</a></li>
+    <li><a href="#handbook/academic/standing/index.html">Academic Standing</a></li>
+    <li><a href="#handbook/academic/standing/honesty.html">Academic Honesty</a></li>
+    <li><a href="#handbook/academic/standing/good_standing.html">Good Standing</a></li>
+    <li><a href="#handbook/academic/standing/deans_list.html">Dean's List</a></li>
+    <li><a href="#handbook/academic/standing/sap.html">Satisfactory Academic Progress and Eligibility</a></li>
+    <li><a href="#handbook/academic/standing/probation.html">Academic Warning, Probation, Suspension, and Dismissal</a></li>
     </ul>
     </li>
     <li>
     <span>Graduation</span>
     <ul>
-    <li><a href="../handbook/academic/graduation/index.html">Graduation</a></li>
-    <li><a href="../handbook/academic/graduation/application.html">Application for Graduation</a></li>
-    <li><a href="../handbook/academic/graduation/conferral.html">Degree/Certificate Conferral</a></li>
-    <li><a href="../handbook/academic/graduation/commencement.html">Commencement</a></li>
+    <li><a href="#handbook/academic/graduation/index.html">Graduation</a></li>
+    <li><a href="#handbook/academic/graduation/application.html">Application for Graduation</a></li>
+    <li><a href="#handbook/academic/graduation/conferral.html">Degree/Certificate Conferral</a></li>
+    <li><a href="#handbook/academic/graduation/commencement.html">Commencement</a></li>
     </ul>
     </li>
     </ul>
@@ -968,30 +1047,30 @@
     <li>
     <span>Student Services</span>
     <ul>
-    <li><a href="../handbook/student_svcs/index.html">Student Services</a></li>
-    <li><a href="../handbook/student_svcs/arc.html">Academic Resource Center</a></li>
-    <li><a href="../handbook/student_svcs/security.html">Campus Security</a></li>
-    <li><a href="../handbook/student_svcs/career.html">Career Services</a></li>
-    <li><a href="../handbook/student_svcs/disability.html">Disability Services</a></li>
-    <li><a href="../handbook/student_svcs/events.html">Event/Room Scheduling</a></li>
-    <li><a href="../handbook/student_svcs/servicedesk.html">Institutional Technology Service Desk</a></li>
-    <li><a href="../handbook/student_svcs/instruct_media.html">Instructional Media</a></li>
-    <li><a href="../handbook/student_svcs/mlrc.html">Murdock Learning Resource Center</a></li>
-    <li><a href="../handbook/student_svcs/mail.html">Mail Services</a></li>
-    <li><a href="../handbook/student_svcs/work_request.html">Plant Services Work Requests</a></li>
-    <li><a href="../handbook/student_svcs/employment.html">Student Employment Program</a></li>
-    <li><a href="../handbook/student_svcs/store.html">University Store</a></li>
+    <li><a href="#handbook/student_svcs/index.html">Student Services</a></li>
+    <li><a href="#handbook/student_svcs/arc.html">Academic Resource Center</a></li>
+    <li><a href="#handbook/student_svcs/security.html">Campus Security</a></li>
+    <li><a href="#handbook/student_svcs/career.html">Career Services</a></li>
+    <li><a href="#handbook/student_svcs/disability.html">Disability Services</a></li>
+    <li><a href="#handbook/student_svcs/events.html">Event/Room Scheduling</a></li>
+    <li><a href="#handbook/student_svcs/servicedesk.html">Institutional Technology Service Desk</a></li>
+    <li><a href="#handbook/student_svcs/instruct_media.html">Instructional Media</a></li>
+    <li><a href="#handbook/student_svcs/mlrc.html">Murdock Learning Resource Center</a></li>
+    <li><a href="#handbook/student_svcs/mail.html">Mail Services</a></li>
+    <li><a href="#handbook/student_svcs/work_request.html">Plant Services Work Requests</a></li>
+    <li><a href="#handbook/student_svcs/employment.html">Student Employment Program</a></li>
+    <li><a href="#handbook/student_svcs/store.html">University Store</a></li>
     </ul>
     </li>
     <li>
     <span>Student Finance</span>
     <ul>
-    <li><a href="../handbook/student_finance/index.html">Student Finance</a></li>
-    <li><a href="../handbook/student_finance/aid.html">Financial Aid</a></li>
-    <li><a href="../handbook/student_finance/payment.html">Account Payment</a></li>
-    <li><a href="../handbook/student_finance/refund.html">Account Refunds</a></li>
-    <li><a href="../handbook/student_finance/remove_charges.html">Removal of Institutional Charges</a></li>
-    <li><a href="../handbook/student_finance/sap.html">Satisfactory Academic Progress</a></li>
+    <li><a href="#handbook/student_finance/index.html">Student Finance</a></li>
+    <li><a href="#handbook/student_finance/aid.html">Financial Aid</a></li>
+    <li><a href="#handbook/student_finance/payment.html">Account Payment</a></li>
+    <li><a href="#handbook/student_finance/refund.html">Account Refunds</a></li>
+    <li><a href="#handbook/student_finance/remove_charges.html">Removal of Institutional Charges</a></li>
+    <li><a href="#handbook/student_finance/sap.html">Satisfactory Academic Progress</a></li>
     </ul>
     </li>
     </ul>
@@ -1003,8 +1082,6 @@
     </ul>
     </li>
     </ul>	
-
-    </div>
 
 </div> <!-- /div#demo-one.demo -->
 
@@ -1076,8 +1153,6 @@
    
     </div> <!-- /.info -->
    
-
-     
     
     <div class="info">
         <h3>Data</h3>
