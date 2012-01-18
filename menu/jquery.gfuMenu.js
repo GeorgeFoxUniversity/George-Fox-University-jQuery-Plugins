@@ -409,10 +409,15 @@
         var data = $(this).data('gfuMenu').data // Reference to plug-in data
         var currentTop = _getCurrentOffset_(data.menu); // Get the current offset of the menu
                 
-        // Are these still needed? 
+        /* Failsafe catches in order:
+         *
+         * 1) The view or holder is large enough the menu can be seen without scrolling.
+         * 2) The last 'window' of the menu is already displayed, so don't scroll down.
+         * 3) The menu is at the top so don't scroll up.
+         */ 
         if( $(data.menu).height() < $(data.view).height() ){ move = false }
         if( currentTop < ( $(data.view).height() - $(data.menu).height() )  && direction == 'down' ){ move = false }
-        if( currentTop == 0 && direction == 'up' && direction == 'down' ){ move = false }
+        if( currentTop == 0 && direction == 'up' ){ move = false }
 
         // If we overshot the top of the list
         if( currentTop > 0 && direction == 'up' )
