@@ -54,6 +54,8 @@
 
         subMenuTitle :'span:first', // Sector of a submenu's title in the html.
         subMenu : 'ul:first', // Selector of a submenu in html.
+        menuTag : 'ul', // Html tag of the submenu, used to find the parent of a submenu
+        menuItem : 'li', // Selector of a menu item in html.
         rootTitle: 'Menu', // Text to use for the top level or 'root' menu title.
         fastForward : null, // Selector of the submenu to display from the start.  Useful for navigation menus.
         up : null, // Selector of an "up" button to hide when the menu is fully at the top.
@@ -180,16 +182,16 @@
                  * Fast forward the menu
                  */
                 var title = $(data.fastForward).children(data.subMenuTitle).text();
-                var subMenu = $(data.fastForward).children('ul:first'); 
+                var subMenu = $(data.fastForward).children(data.subMenu); 
                 
                 // Fill the nav stack as fill the sub menu we wanted was clicked to 
                 $(data.fastForward).parentsUntil('div.gfu-menu-holder').each(function()
                 {
-                    if( $(this).is('li') )
+                    if( $(this).is(data.menuItem) )
                     {
                         var parentMenu = {};
                         parentMenu.title = $(this).children(data.subMenuTitle).text();
-                        parentMenu.menu = $(this).children('ul:first');
+                        parentMenu.menu = $(this).children(data.subMenu);
                         
                         data.nav.unshift(parentMenu);
                     }
@@ -250,7 +252,7 @@
         
         
         // Create an entry in gfu menu for each item in the user menu
-        $(list).children('li').each(function()
+        $(list).children(data.menuItem).each(function()
         {
             // Create the entry item
             var item = $('<div class="gfu-menu-item"></div>');
@@ -258,10 +260,10 @@
             // Add a reference to the "real" menu item and the data object
             item.data('gfuMenu', {real : this, data : data});
 
-            if( $(this).children('ul').length != 0 ) // Create submenu entry
+            if( $(this).children(data.subMenu).length != 0 ) // Create submenu entry
             {
                 item.addClass('gfu-menu-sub');
-                item.text( $(this).children('span').text() );
+                item.text( $(this).children(data.subMenuTitle).text() );
                 item.click(_subMenuClick_);
             }
             else // Create normal entry
@@ -284,7 +286,8 @@
    
     
     /**
-     * Calculates the menu's offset from the top of the view.
+     * Calculates the menu's offset from the top of the view. In this context
+     * offset means distance from the top of the menu.
      *
      * @param html menu - the gfu menu
      */
@@ -321,8 +324,8 @@
     function _updateButtonState_(offset, data)
     {
         // Control up button state
-        if( offset >= 0 || //Add the top of the menu
-            $(data.menu).height() < $(data.view).height() //Menu is to short to be scrolled
+        if( offset >= 0 || // At the top of the menu
+            $(data.menu).height() < $(data.view).height() //Menu is too short to be scrolled
           ) 
         {
             $(data.up).hide();
@@ -434,7 +437,7 @@
             {
                 newTop = currentTop + distance;
 
-                if( newTop > 0 ) // Do scroll higher then the menu
+                if( newTop > 0 ) // Don't scroll higher then the menu
                 {
                     newTop = 0;
                 }
@@ -468,7 +471,7 @@
         // Save navigation information
         last = {}
         last['title'] = data.menu.children('div.gfu-menu-title').text()
-        last['menu'] = last['menu'] = $(real).closest('ul'); // Parent of the item clicked
+        last['menu'] = $(real).closest(data.menuTag); // Parent of the item clicked
         
         // Push the last view onto the nav stack
         data.nav.push(last);
@@ -483,7 +486,7 @@
         // Run the user's callback function
         if( data.afterSubMenu !== null )
         {
-            data.afterSubMenu.apply(this, [real]);
+            data.afterSubMenu.apply(this, [real, data]);
         }
 
     } // end of _subMenuClick_
@@ -505,7 +508,7 @@
         if( data.itemClick !== null )
         {
             // If itemClick was set, run that function and pass it the 'real' list item.
-            data.itemClick.apply(this, [real]);
+            data.itemClick.apply(this, [real, data]);
         }
         else if( $(real).children('a:first') )
         {
