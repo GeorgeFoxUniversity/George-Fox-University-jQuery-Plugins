@@ -418,13 +418,9 @@
         if( $(data.menu).height() < $(data.view).height() ){ move = false }
         if( currentTop < ( $(data.view).height() - $(data.menu).height() )  && direction == 'down' ){ move = false }
         if( currentTop == 0 && direction == 'up' ){ move = false }
-
-        // If we overshot the top of the list
-        if( currentTop > 0 && direction == 'up' )
-        {
-            $(data.menu).animate({top : 0}, 'slow');
-        }
-        else if( move )
+        
+        
+        if( move )
         {
             // Do the right math for up (+) and down (-)
             if( direction == 'down' )
