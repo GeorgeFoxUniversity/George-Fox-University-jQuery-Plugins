@@ -124,7 +124,7 @@
      * index - the index of the current selected element
      * items - array holding the items to be scrolled
      * container - the inner container holding items to be scrolled 
-     * itemsWidth - The sum of the outer width of all the items to be scrolled. 
+     * itemsLength - The sum of the outer width of all the items to be scrolled. 
      */
     var defaultData = {
         current : null,
@@ -132,8 +132,8 @@
         index : null,
         items : [],
         container : null,
-        itemsWidth : null,
-        windowWidth : null,
+        itemsLength : null,
+        windowLength : null,
         lastSection: null,
         headOfLastSection: null
     }
@@ -158,7 +158,8 @@
         'afterSeek' : null,
         'animate' : 'default',
         'speed' : 'slow',
-        'log' : false
+        'log' : false,
+        'vertical' : false
     };
 
 
@@ -248,7 +249,7 @@
         
         var data = $(this).data('selectorView').data;
         
-        log("Width of the window(" + data.windowWidth + ")  width of items(" +  data.itemsWidth + ")");
+        log("Length of the window(" + data.windowLength + ")  width of items(" +  data.itemsLength + ")");
         
         /*
          * The general assumption is the first item in the holder div, is
@@ -263,11 +264,18 @@
         data.visibleIndex = 0;
         data.index = 0;
         
-        data.windowWidth = $(this).outerWidth();
+        if( data.vertical )
+        {
+            data.windowLength = $(this).outerHeight();
+        }
+        else
+        {
+            data.windowLength = $(this).outerWidth();
+        }
     
         _buildItems_.apply(this);                       
 
-        data.lastSection = data.itemsWidth - data.windowWidth
+        data.lastSection = data.itemsLength - data.windowLength
         log("Last section: " + data.lastSection);
 
         data.headOfLastSection = null;
@@ -305,19 +313,27 @@
          * its parent div.
          *
          */
-        data.itemsWidth = 0;
+        data.itemsLength = 0;
         data.items = [];
 
         /* Per item, makes a reference in data.items and adds its width to
-         * data.itemsWidth
+         * data.itemsLength
          */
         $(this).children(data.items).children().each(function(index, value)
         {
             $(this).removeData('selectorView');
 
-            $(this).data('selectorView', {start : data.itemsWidth, index: index});
+            $(this).data('selectorView', {start : data.itemsLength, index: index});
             data.items.push(this);
-            data.itemsWidth += $(this).outerWidth(true);
+            
+            if( data.vertical )
+            {
+                data.itemsLength += $(this).outerHeight(true);
+            }
+            else
+            {
+                data.itemsLength += $(this).outerWidth(true);
+            }
         });
 
     } // End of buildItems
@@ -442,7 +458,7 @@
             
             // Scroll to the head of the last of visible section.
             // Don't scroll to the end if the items element is smaller then the container.
-            if( move > data.lastSection && data.itemsWidth > data.windowWidth ) 
+            if( move > data.lastSection && data.itemsLength > data.windowLength ) 
             {
                 move = data.lastSection;
                 log("Scrolling to the end of the list");
@@ -483,15 +499,37 @@
         
         if( data.animate == 'default' )
         {
-            $(data.container).animate({left: positionToScroll }, data.speed);
+            if( data.vertical )
+            {
+                $(data.container).animate({top: positionToScroll }, data.speed);
+            }
+            else
+            {
+                $(data.container).animate({left: positionToScroll }, data.speed);
+            }
         }
         else if( data.animate === null )
         {
-            $(data.container).css('left', positionToScroll);
+            if( data.vertical )
+            {
+                $(data.container).css('top', positionToScroll);
+            }
+            else
+            {
+                $(data.container).css('top', positionToScroll);
+            }
         }
         else if( typeof(settings.animate) == 'function' )
         {
-            settings.animate.apply(this, [positionToScroll]);
+
+            if( data.vertical )
+            {
+                settings.animate.apply(this, [positionToScroll, "vertical"]);
+            }
+            else
+            {
+                settings.animate.apply(this, [positionToScroll, "horizontal"]);
+            }
         }
 
     } //End of _move_
