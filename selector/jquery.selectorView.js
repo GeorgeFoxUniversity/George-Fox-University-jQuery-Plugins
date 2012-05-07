@@ -89,11 +89,7 @@
      */
     function log()
     {
-        if( settings.log )
-        {
-            console.log( arguments );
-        }
-
+        debug( arguments );
     }// End of Log
 
 
@@ -114,7 +110,7 @@
         select : function( ) { return _select_.apply(this, arguments); },
         forward : function( ) { return _forward_.apply(this, arguments); },
         back : function( ) { return _back_.apply(this, arguments); },
-        data : function( ) { return data; }
+        data : function( ) { return $(this).data('selectorView').data; }
     };
 
 
@@ -130,7 +126,7 @@
      * container - the inner container holding items to be scrolled 
      * itemsWidth - The sum of the outer width of all the items to be scrolled. 
      */
-    var data = {
+    var defaultData = {
         current : null,
         visibleIndex : null,
         index : null,
@@ -155,7 +151,7 @@
      * speed - speed for default animation
      * log - log debug messages
      */
-    var settings = {
+    var defaultSettings = {
         'items' : '.items',
         'selected' : 'selected',
         'afterSelect' : null,
@@ -212,14 +208,27 @@
         // function, it is required to keep jQuery chaining.
         return this.each(function()
         {
+            
+            /* Prepare our data object that will be attached the element the
+             * plug-in is called on.
+             * 
+             * The default data template added after settings because I do not
+             * want the user to be able to give them a starting value.
+             */
+            var data = $.extend( {}, defaultSettings );
+
             //Merge options
             if( options )
             {
-                $.extend( settings, options );
+                $.extend( data, options );
             }
 
+            // Add the default data template
+            $.extend( data, defaultData );
+            $(this).data('selectorView', { data : data }) // Create a local data/settings store
+
             //Create a reference to the parent of the items to be scrolled through 
-            data.container = $(this).children(settings.items); 
+            data.container = $(this).children(data.items); 
             log( data.container );       
 
 
@@ -237,6 +246,8 @@
     function _reset_()
     {
         
+        var data = $(this).data('selectorView').data;
+        
         log("Width of the window(" + data.windowWidth + ")  width of items(" +  data.itemsWidth + ")");
         
         /*
@@ -246,7 +257,7 @@
 
         // The first child of the items container is made currently selected element
         data.current =  data.container.children(":first");
-        $(data.current).addClass(settings.selected); //Add selected class to current
+        $(data.current).addClass(data.selected); //Add selected class to current
         
         //The first element is the start of the visible and selected lists
         data.visibleIndex = 0;
@@ -286,6 +297,7 @@
      */    
     function _buildItems_()
     {
+        var data = $(this).data('selectorView').data;
 
         /* Calculate the combined outer width of the times to be scrolled.
          * This is needed to determine how far the container is to be
@@ -299,7 +311,7 @@
         /* Per item, makes a reference in data.items and adds its width to
          * data.itemsWidth
          */
-        $(this).children(settings.items).children().each(function(index, value)
+        $(this).children(data.items).children().each(function(index, value)
         {
             $(this).removeData('selectorView');
 
@@ -320,6 +332,8 @@
      */ 
     function _prev_()
     {
+         var data = $(this).data('selectorView').data;
+        
          if( data.index != 0 )
          {
              return _select_.apply(this, [data.index - 1]); 
@@ -336,6 +350,8 @@
      */ 
     function _next_()
     {
+        var data = $(this).data('selectorView').data;
+        
         if( data.index != data.items.length - 1 )
         {
             return _select_.apply(this, [data.index + 1]); 
@@ -352,6 +368,8 @@
      */
     function _forward_()
     {
+        var data = $(this).data('selectorView').data;
+        
         if( data.visibleIndex != data.items.length - 1 )
         {
             return _seek_.apply(this, [data.visibleIndex + 1]); 
@@ -367,10 +385,12 @@
      */
     function _back_()
     {
-         if( data.visibleIndex != 0 )
-         {   
-             return _seek_.apply(this, [data.visibleIndex - 1]); 
-         }
+        var data = $(this).data('selectorView').data;
+        
+        if( data.visibleIndex != 0 )
+        {   
+            return _seek_.apply(this, [data.visibleIndex - 1]); 
+        }
 
     } //End of _back_
 
@@ -388,6 +408,7 @@
      */ 
     function _seek_(newIndex, force)
     {
+        var data = $(this).data('selectorView').data;
         var sought = $(data.items[newIndex]);
         var move = 0;
         
@@ -443,9 +464,9 @@
         /**
          * Run the user provided function after new current item is ready.
          */
-        if( settings.afterSeek != null )
+        if( data.afterSeek != null )
         {
-            settings.afterSeek.apply(data.current, [data])
+            data.afterSeek.apply(data.current, [data])
         }
 
          
@@ -455,14 +476,16 @@
     
     function _move_(positionToScroll)
     {
+        var data = $(this).data('selectorView').data;
+        
         positionToScroll = positionToScroll * -1;
         log("In the move function", positionToScroll);
         
-        if( settings.animate == 'default' )
+        if( data.animate == 'default' )
         {
-            $(data.container).animate({left: positionToScroll }, settings.speed);
+            $(data.container).animate({left: positionToScroll }, data.speed);
         }
-        else if( settings.animate === null )
+        else if( data.animate === null )
         {
             $(data.container).css('left', positionToScroll);
         }
@@ -484,16 +507,17 @@
      */
     function _select_(newIndex, force)
     {
+        var data = $(this).data('selectorView').data;
         
         //Remove the selected class from the old element
-        $(data.current).removeClass( settings.selected );
+        $(data.current).removeClass( data.selected );
 
         //Update current index
         data.current = data.items[newIndex];
         data.index = newIndex;
         
         //Add the selected class to the new current
-        $(data.current).addClass( settings.selected );
+        $(data.current).addClass( data.selected );
 
         //Make sure the current element is visible
         _seek_.apply(this, [newIndex, force]);
@@ -501,31 +525,14 @@
         /**
          * Run the user provided function after new current item is ready.
          */
-        if( settings.afterSelect != null )
+        if( data.afterSelect != null )
         {
-            settings.afterSelect.apply(data.current, [data])
+            data.afterSelect.apply(data.current, [data])
         }
         
         return data.current;
     } //End of _select_
 
-
-    function _outerWidth_(element)
-    {
-        var outer = new Object;
-        var padding = new Object;
-        var margin = new Object;
-         
-        element = $(element);
-        log( element ); 
-        padding.left = element.css('padding-left');
-        log(padding.left);
-        padding.left = padding.left.substr(0, padding.left.length - 2);
-        padding.left = parseInt(padding.left, 10);
-        
-        return outer;
-    }
-     
    
 })( jQuery );
 
